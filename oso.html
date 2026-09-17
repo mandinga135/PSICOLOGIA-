@@ -1,0 +1,412 @@
+<!DOCTYPE html>  
+<html lang="es">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>Guía Interactiva: Redes, Actores y Articulación</title>  
+  <style>  
+    :root {  
+      --primary: #1e3a5f;  
+      --accent: #2a6f97;  
+      --highlight: #e63946;  
+      --bg: #f4f6f9;  
+      --card: #ffffff;  
+      --text: #2b2d42;  
+      --border: #dcdcdc;  
+    }  
+  
+    * {  
+      box-sizing: border-box;  
+      margin: 0;  
+      padding: 0;  
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;  
+    }  
+  
+    body {  
+      background-color: var(--bg);  
+      color: var(--text);  
+      line-height: 1.6;  
+      padding: 20px;  
+      display: flex;  
+      justify-content: center;  
+    }  
+  
+    .container {  
+      max-width: 860px;  
+      width: 100%;  
+      background: var(--card);  
+      border-radius: 12px;  
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);  
+      overflow: hidden;  
+      padding: 30px;  
+    }  
+  
+    header {  
+      border-bottom: 2px solid var(--accent);  
+      padding-bottom: 20px;  
+      margin-bottom: 25px;  
+      text-align: center;  
+    }  
+  
+    header h1 {  
+      color: var(--primary);  
+      font-size: 1.8rem;  
+      margin-bottom: 8px;  
+    }  
+  
+    header p {  
+      color: #555;  
+      font-size: 0.95rem;  
+    }  
+  
+    /* Video Container */  
+    .media-section {  
+      margin-bottom: 30px;  
+    }  
+  
+    .video-wrapper {  
+      position: relative;  
+      padding-bottom: 56.25%;  
+      height: 0;  
+      overflow: hidden;  
+      border-radius: 8px;  
+      margin-bottom: 15px;  
+      background-color: #000;  
+    }  
+  
+    .video-wrapper iframe {  
+      position: absolute;  
+      top: 0;  
+      left: 0;  
+      width: 100%;  
+      height: 100%;  
+      border: 0;  
+    }  
+  
+    /* Progress bar */  
+    .progress-box {  
+      margin-bottom: 25px;  
+    }  
+  
+    .progress-bar-bg {  
+      background: #e2e8f0;  
+      height: 10px;  
+      border-radius: 5px;  
+      overflow: hidden;  
+    }  
+  
+    .progress-bar-fill {  
+      background: var(--accent);  
+      height: 100%;  
+      width: 25%;  
+      transition: width 0.3s ease;  
+    }  
+  
+    .step-indicator {  
+      display: flex;  
+      justify-content: space-between;  
+      margin-top: 8px;  
+      font-size: 0.85rem;  
+      font-weight: bold;  
+      color: #64748b;  
+    }  
+  
+    /* Card steps */  
+    .step-panel {  
+      display: none;  
+      animation: fadeIn 0.4s ease;  
+    }  
+  
+    .step-panel.active {  
+      display: block;  
+    }  
+  
+    @keyframes fadeIn {  
+      from { opacity: 0; transform: translateY(8px); }  
+      to { opacity: 1; transform: translateY(0); }  
+    }  
+  
+    .step-title {  
+      color: var(--primary);  
+      font-size: 1.3rem;  
+      margin-bottom: 10px;  
+      display: flex;  
+      align-items: center;  
+      gap: 10px;  
+    }  
+  
+    .pill {  
+      background: #e0f2fe;  
+      color: #0369a1;  
+      font-size: 0.75rem;  
+      padding: 3px 8px;  
+      border-radius: 12px;  
+    }  
+  
+    .prompt-box {  
+      background: #f8fafc;  
+      border-left: 4px solid var(--accent);  
+      padding: 15px;  
+      margin: 15px 0;  
+      border-radius: 0 6px 6px 0;  
+      font-size: 0.95rem;  
+    }  
+  
+    textarea {  
+      width: 100%;  
+      height: 110px;  
+      padding: 12px;  
+      border: 1px solid var(--border);  
+      border-radius: 6px;  
+      font-size: 0.95rem;  
+      resize: vertical;  
+      margin-bottom: 15px;  
+    }  
+  
+    textarea:focus {  
+      outline: 2px solid var(--accent);  
+      border-color: transparent;  
+    }  
+  
+    /* Theoretical spoiler */  
+    details {  
+      background: #fffbeb;  
+      border: 1px solid #fef3c7;  
+      padding: 10px 15px;  
+      border-radius: 6px;  
+      margin-bottom: 20px;  
+      font-size: 0.88rem;  
+    }  
+  
+    details summary {  
+      font-weight: 600;  
+      color: #b45309;  
+      cursor: pointer;  
+    }  
+  
+    details p {  
+      margin-top: 8px;  
+      color: #78350f;  
+    }  
+  
+    /* Controls */  
+    .btn-group {  
+      display: flex;  
+      justify-content: space-between;  
+      margin-top: 25px;  
+      padding-top: 15px;  
+      border-top: 1px solid #e2e8f0;  
+    }  
+  
+    button {  
+      padding: 10px 20px;  
+      border-radius: 6px;  
+      border: none;  
+      font-weight: 600;  
+      cursor: pointer;  
+      transition: background 0.2s;  
+    }  
+  
+    .btn-prev {  
+      background: #e2e8f0;  
+      color: #475569;  
+    }  
+  
+    .btn-prev:hover {  
+      background: #cbd5e1;  
+    }  
+  
+    .btn-next {  
+      background: var(--accent);  
+      color: #fff;  
+    }  
+  
+    .btn-next:hover {  
+      background: #1d4ed8;  
+    }  
+  
+    .btn-finish {  
+      background: #16a34a;  
+      color: #fff;  
+    }  
+  
+    .btn-finish:hover {  
+      background: #15803d;  
+    }  
+  </style>  
+</head>  
+<body>  
+  
+  <div class="container">  
+    <header>  
+      <h1>Dispositivo de Análisis Territorial: "El Puente"</h1>  
+      <p>Semana 11 · Redes comunitarias, actores sociales y articulación interinstitucional</p>  
+    </header>  
+  
+    <!-- Sección Audiovisual -->  
+    <div class="media-section">  
+      <div class="video-wrapper">  
+        <iframe src="https://www.youtube-nocookie.com/embed/gQiaAb6VGt8" title="Cortometraje animado Bridge" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>  
+      </div>  
+      <p style="font-size:0.85rem; color:#64748b; text-align:center;">  
+        <em>Cortometraje: "Bridge" (Ting Chian Tey). Observa la dinámica vincular, las posiciones de poder y el desenlace de la tarea.</em>  
+      </p>  
+    </div>  
+  
+    <!-- Barra de progreso -->  
+    <div class="progress-box">  
+      <div class="progress-bar-bg">  
+        <div id="progressFill" class="progress-bar-fill"></div>  
+      </div>  
+      <div class="step-indicator">  
+        <span>Fase 1: Actores</span>  
+        <span>Fase 2: Poder y Exclusión</span>  
+        <span>Fase 3: Articulación</span>  
+        <span>Fase 4: Operador Psicosocial</span>  
+      </div>  
+    </div>  
+  
+    <!-- Formulario / Pasos interactivos -->  
+    <form id="debateForm">  
+  
+      <!-- PASO 1 -->  
+      <div class="step-panel active" id="step1">  
+        <h2 class="step-title">1. Mapeo y Tipología de Actores <span class="pill">Dabas / Pichon-Rivière</span></h2>  
+        <div class="prompt-box">  
+          <p><strong>Pregunta 1.1:</strong> Si concebimos el puente como un territorio en el que coexisten distintas tramas vinculares, ¿qué tipo de actores encarnan el <strong>Oso y el Alce</strong> (redes institucionales formales) y qué tipo de actores representan el <strong>Conejo y el Mapache</strong> (redes primarias/comunitarias)?</p>  
+        </div>  
+        <textarea id="ans1" placeholder="Escribe aquí tu análisis sobre la tipología de actores y la diferencia entre presencia y legitimidad..."></textarea>  
+  
+        <details>  
+          <summary>💡 Clave conceptual para el debate</summary>  
+          <p>Para Elina Dabas, las redes no se reducen al organigrama formal. El tamaño físico o administrativo de una institución no garantiza su operatividad comunitaria. Muchas veces los actores primarios o informales sostienen la vida real del territorio.</p>  
+        </details>  
+      </div>  
+  
+      <!-- PASO 2 -->  
+      <div class="step-panel" id="step2">  
+        <h2 class="step-title">2. Relaciones de Poder y Centralidad <span class="pill">Foucault / Carballeda</span></h2>  
+        <div class="prompt-box">  
+          <p><strong>Pregunta 2.1:</strong> ¿Qué acontece cuando dos instituciones hegemónicas ocupan centralmente el territorio desde la competencia? ¿Cuál es la respuesta hacia los pequeños y qué demuestra el corte de las cuerdas respecto a la capacidad de agencia de la comunidad?</p>  
+        </div>  
+        <textarea id="ans2" placeholder="Analiza el bloqueo mutuo, la expulsión con el 'este caso no me corresponde' y la reacción de los actores invisibilizados..."></textarea>  
+  
+        <details>  
+          <summary>💡 Clave conceptual para el debate</summary>  
+          <p>El poder no es simétrico. La centralidad burocrática puede producir parálisis territorial. Como advierte Alfredo Carballeda, cuando las instituciones desestiman o silencian a los sujetos afectados, la comunidad activa sus propios resortes y estrategias de autodefensa.</p>  
+        </details>  
+      </div>  
+  
+      <!-- PASO 3 -->  
+      <div class="step-panel" id="step3">  
+        <h2 class="step-title">3. De la Disputa a la Articulación <span class="pill">Mario Rovere</span></h2>  
+        <div class="prompt-box">  
+          <p><strong>Pregunta 3.1:</strong> En la resolución final entre el conejo y el mapache: ¿en qué momento se produce el pasaje de la desconfianza hacia la <strong>cooperación y articulación</strong>? ¿Qué tuvieron que resignar ambos para construir capacidad conjunta de acción?</p>  
+        </div>  
+        <textarea id="ans3" placeholder="Describe cómo pasaron del reconocimiento mutuo a la distribución corresponsable de roles en torno a la tarea común..."></textarea>  
+  
+        <details>  
+          <summary>💡 Clave conceptual para el debate</summary>  
+          <p>Siguiendo la escalera vincular de Mario Rovere (Reconocer → Conocer → Colaborar → Cooperar → Articular), no hay red por el mero hecho de cruzarse; hay red cuando se produce una co-construcción del problema orientada por una tarea explícita.</p>  
+        </details>  
+      </div>  
+  
+      <!-- PASO 4 -->  
+      <div class="step-panel" id="step4">  
+        <h2 class="step-title">4. El Rol del Operador Psicosocial <span class="pill">Bleger / Montero</span></h2>  
+        <div class="prompt-box">  
+          <p><strong>Pregunta 4.1:</strong> Si fueras convocado como operador psicosocial en medio de la disputa: ¿cuál sería el riesgo ético de colocarte como el salvador indispensable? ¿Qué dispositivo habilitarías para que el puente vuelva a ser transitable?</p>  
+        </div>  
+        <textarea id="ans4" placeholder="Reflexiona sobre el obstáculo de la indispensabilidad, la facilitación sin imposición y la autonomía de la red..."></textarea>  
+  
+        <details>  
+          <summary>💡 Clave conceptual para el debate</summary>  
+          <p>Maritza Montero y Enrique Pichon-Rivière señalan que el operador actúa como catalizador. Su objetivo ético es la 'retirada dialéctica': fortalecer a los actores para que la red funcione de manera autónoma sin reproducir dependencias.</p>  
+        </details>  
+      </div>  
+  
+      <!-- Botones de Navegación -->  
+      <div class="btn-group">  
+        <button type="button" class="btn-prev" id="prevBtn" onclick="navigateStep(-1)" disabled>Anterior</button>  
+        <button type="button" class="btn-next" id="nextBtn" onclick="navigateStep(1)">Siguiente</button>  
+        <button type="button" class="btn-finish" id="finishBtn" onclick="exportAnswers()" style="display:none;">Descargar Síntesis (.txt)</button>  
+      </div>  
+    </form>  
+  </div>  
+  
+  <!-- Lógica Interactiva en JavaScript -->  
+  <script>  
+    let currentStep = 1;  
+    const totalSteps = 4;  
+  
+    function updateView() {  
+      // Mostrar y ocultar paneles  
+      for (let i = 1; i <= totalSteps; i++) {  
+        const stepElement = document.getElementById('step' + i);  
+        if (i === currentStep) {  
+          stepElement.classList.add('active');  
+        } else {  
+          stepElement.classList.remove('active');  
+        }  
+      }  
+  
+      // Actualizar barra de progreso  
+      const progressPercent = (currentStep / totalSteps) * 100;  
+      document.getElementById('progressFill').style.width = progressPercent + '%';  
+  
+      // Control de botones  
+      document.getElementById('prevBtn').disabled = (currentStep === 1);  
+  
+      if (currentStep === totalSteps) {  
+        document.getElementById('nextBtn').style.display = 'none';  
+        document.getElementById('finishBtn').style.display = 'inline-block';  
+      } else {  
+        document.getElementById('nextBtn').style.display = 'inline-block';  
+        document.getElementById('finishBtn').style.display = 'none';  
+      }  
+    }  
+  
+    function navigateStep(direction) {  
+      currentStep += direction;  
+      if (currentStep < 1) currentStep = 1;  
+      if (currentStep > totalSteps) currentStep = totalSteps;  
+      updateView();  
+    }  
+  
+    function exportAnswers() {  
+      const r1 = document.getElementById('ans1').value || 'Sin respuesta';  
+      const r2 = document.getElementById('ans2').value || 'Sin respuesta';  
+      const r3 = document.getElementById('ans3').value || 'Sin respuesta';  
+      const r4 = document.getElementById('ans4').value || 'Sin respuesta';  
+  
+      const content =   
+`=============================================================  
+GUÍA DE DEBATE: REDES, ACTORES Y ARTICULACIÓN TERRITORIAL  
+Material disparador: Corto "Bridge" (Ting Chian Tey)  
+=============================================================  
+  
+1. MAPEO Y TIPOLOGÍA DE ACTORES (Dabas / Pichon-Rivière):  
+${r1}  
+  
+-------------------------------------------------------------  
+2. PODER, CENTRALIDAD Y EXCLUSIÓN (Foucault / Carballeda):  
+${r2}  
+  
+-------------------------------------------------------------  
+3. DE LA DISPUTA A LA ARTICULACIÓN (Rovere / Tarea Pichoniana):  
+${r3}  
+  
+-------------------------------------------------------------  
+4. EL ROL DEL OPERADOR PSICOSOCIAL (Bleger / Montero):  
+${r4}  
+=============================================================`;  
+  
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });  
+      const link = document.createElement('a');  
+      link.href = URL.createObjectURL(blob);  
+      link.download = 'Sintesis_Debate_Redes_Comunitarias.txt';  
+      link.click();  
+    }  
+  </script>  
+</body>  
+</html>  
