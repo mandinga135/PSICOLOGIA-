@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Del Territorio a la Tarea | Trabajo Práctico Integrador</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Cinzel Decorative, Merriweather, Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Cinzel+Decorative:wght@700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Tailwind Configuration for Vintage Academy Palette -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            title: ['"Cinzel"', 'serif'],
+            display: ['"Cinzel Decorative"', 'serif'],
+            serif: ['"Merriweather"', 'serif'],
+            sans: ['"Inter"', 'sans-serif'],
+          },
+          colors: {
+            parchment: {
+              50: '#FAF6ED',
+              100: '#F4ECD8',
+              200: '#EADBB8',
+              300: '#DFC896',
+              400: '#D1B474',
+              500: '#BFA055',
+            },
+            leather: {
+              700: '#5C3317',
+              800: '#3E2211',
+              900: '#261408',
+            },
+            bronze: {
+              500: '#A47537',
+              600: '#865E2A',
+              700: '#69481E',
+            },
+            ink: {
+              DEFAULT: '#1E1B18',
+              muted: '#4A4640',
+              light: '#706B62',
+            },
+            wax: '#9A2A2A',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #EDE3CF;
+      background-image: 
+        radial-gradient(#CBB994 0.75px, transparent 0.75px), 
+        radial-gradient(#CBB994 0.75px, #EDE3CF 0.75px);
+      background-size: 30px 30px;
+      background-position: 0 0, 15px 15px;
+      color: #1E1B18;
+    }
+
+    /* Custom scrollbar matching parchment vibe */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #E5D5B3;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #A47537;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #865E2A;
+    }
+
+    /* Parchment Card Shadow & Border */
+    .parchment-card {
+      background: #FAF6ED;
+      border: 1px solid #D5C29D;
+      box-shadow: 0 4px 15px -1px rgba(78, 51, 23, 0.12), 0 2px 6px -1px rgba(78, 51, 23, 0.08);
+      position: relative;
+    }
+
+    /* Wax Seal Simulation */
+    .wax-seal {
+      width: 48px;
+      height: 48px;
+      background: radial-gradient(circle at 35% 35%, #BE3232, #7B1B1B);
+      border-radius: 50%;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.3), inset 0 2px 3px rgba(255,255,255,0.25);
+      border: 2px dashed rgba(255,230,200,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #F8E2BE;
+    }
+
+    /* Print styling strictly tailored for clean academic delivery */
+    @media print {
+      body {
+        background: #fff !important;
+        color: #000 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-only {
+        display: block !important;
+      }
+      .parchment-card {
+        box-shadow: none !important;
+        border: 1px solid #999 !important;
+        background: #fff !important;
+        page-break-inside: avoid;
+      }
+      textarea {
+        border: none !important;
+        resize: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="font-sans min-h-screen flex flex-col text-ink selection:bg-bronze-500 selection:text-white">
+
+  <header class="no-print bg-gradient-to-r from-leather-900 via-leather-800 to-leather-900 text-[#F5EAD4] border-b-4 border-bronze-500 shadow-xl sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center space-x-3.5">
+        <div class="wax-seal flex-shrink-0" title="Cátedra Psicología Social">
+          <i data-lucide="compass" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs tracking-widest uppercase bg-bronze-600/60 text-parchment-100 px-2 py-0.5 rounded font-mono font-medium">Unidad III • Semana 12</span>
+            <span class="text-xs text-parchment-300 font-serif italic hidden md:inline">Especialización en Inserción y Práctica Profesional</span>
+          </div>
+          <h1 class="text-lg sm:text-xl font-title font-bold text-parchment-50 tracking-wide flex items-center gap-2">
+            DEL TERRITORIO A LA TAREA
+            <span class="text-bronze-400 text-sm font-serif font-normal hidden lg:inline">— Trabajo Práctico Integrador</span>
+          </h1>
+        </div>
+      </div>
+
+      <!-- Quick Controls: Autosave status & Actions -->
+      <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-end">
+        <div id="save-status" class="flex items-center text-xs font-mono text-parchment-200 bg-leather-900/80 px-2.5 py-1 rounded border border-bronze-600/40">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span>
+          <span>Guardado local activo</span>
+        </div>
+        <button onclick="loadSampleGuide()" class="text-xs bg-bronze-600 hover:bg-bronze-500 text-white font-medium px-3 py-1.5 rounded transition flex items-center gap-1.5 shadow-sm" title="Carga un ejemplo de articulación conceptual basado en el cuaderno">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Cargar Borrador Modelo</span>
+          <span class="sm:hidden">Modelo</span>
+        </button>
+        <button onclick="window.print()" class="text-xs bg-parchment-100 hover:bg-white text-leather-900 font-semibold px-3 py-1.5 rounded transition flex items-center gap-1.5 shadow" title="Imprimir o Guardar como PDF">
+          <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+          <span>PDF</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="bg-leather-900/90 border-t border-leather-700/60 px-4 sm:px-6">
+      <div class="max-w-7xl mx-auto flex overflow-x-auto space-x-1 sm:space-x-4 py-1.5 text-xs sm:text-sm font-title scrollbar-none">
+        <button onclick="switchTab('tab-teoria')" id="btn-tab-teoria" class="tab-btn active-tab px-3.5 py-1.5 rounded-t-md font-semibold transition flex items-center gap-1.5 text-parchment-100 border-b-2 border-bronze-400">
+          <i data-lucide="book-open" class="w-4 h-4"></i>
+          <span>1. Marco & Cuaderno</span>
+        </button>
+        <button onclick="switchTab('tab-video')" id="btn-tab-video" class="tab-btn px-3.5 py-1.5 rounded-t-md font-semibold transition flex items-center gap-1.5 text-parchment-300 hover:text-white border-b-2 border-transparent">
+          <i data-lucide="film" class="w-4 h-4"></i>
+          <span>2. Video & Diario de Campo</span>
+        </button>
+        <button onclick="switchTab('tab-tp')" id="btn-tab-tp" class="tab-btn px-3.5 py-1.5 rounded-t-md font-semibold transition flex items-center gap-1.5 text-parchment-300 hover:text-white border-b-2 border-transparent">
+          <i data-lucide="pen-tool" class="w-4 h-4"></i>
+          <span>3. Trabajo Práctico (5 Ejes)</span>
+          <span id="badge-progress" class="ml-1 px-1.5 py-0.2 bg-bronze-700 text-[10px] rounded-full text-white font-mono">0/9</span>
+        </button>
+        <button onclick="switchTab('tab-cartografia')" id="btn-tab-cartografia" class="tab-btn px-3.5 py-1.5 rounded-t-md font-semibold transition flex items-center gap-1.5 text-parchment-300 hover:text-white border-b-2 border-transparent">
+          <i data-lucide="network" class="w-4 h-4"></i>
+          <span>4. Brújula del Operador</span>
+        </button>
+        <button onclick="switchTab('tab-exportar')" id="btn-tab-exportar" class="tab-btn px-3.5 py-1.5 rounded-t-md font-semibold transition flex items-center gap-1.5 text-parchment-300 hover:text-white border-b-2 border-transparent">
+          <i data-lucide="file-check" class="w-4 h-4"></i>
+          <span>5. Informe Final & Rúbrica</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Progress Bar Header strip -->
+  <div class="no-print bg-parchment-300 h-1.5 w-full">
+    <div id="tp-progress-bar" class="bg-bronze-600 h-full transition-all duration-300" style="width: 0%;"></div>
+  </div>
+
+  <main class="flex-grow max-w-7xl mx-auto w-full px-3 sm:px-6 py-6 space-y-6">
+
+    <!-- TAB 1: CONTEXTO & MARCO TEÓRICO -->
+    <section id="tab-teoria" class="tab-content space-y-6">
+      <!-- Welcome Banner -->
+      <div class="parchment-card rounded-xl p-6 md:p-8 border-l-8 border-l-bronze-600">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="px-2 py-0.5 text-xs font-mono font-bold bg-leather-800 text-parchment-100 rounded">CIERRE DE PRAXIS</span>
+              <span class="text-sm font-serif italic text-ink-muted">Psicología Social Comunitaria e Institucional</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-title font-bold text-leather-900 tracking-tight">
+              Síntesis, Consolidación y Proyección Conceptual
+            </h2>
+            <p class="mt-2 text-ink-muted font-serif text-sm sm:text-base max-w-3xl leading-relaxed">
+              «Los cierres de unidad no son instancias de repaso memorístico. Son operaciones reflexivas para articular los desplazamientos del sujeto, el sufrimiento social y las redes de corresponsabilidad.»
+            </p>
+          </div>
+          <div class="hidden lg:block text-right border-l pl-6 border-parchment-300">
+            <span class="block text-xs uppercase tracking-wider font-mono text-bronze-700 font-bold">Autorías de Referencia</span>
+            <span class="text-xs text-ink-muted font-serif">Pichon-Rivière • Moffatt • Carballeda<br>Quiroga • Dabas • Rovere</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- The 3 Major Shifts (El Triple Desplazamiento) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="parchment-card rounded-lg p-5 border-t-4 border-t-bronze-500 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-mono font-bold uppercase text-bronze-700 bg-bronze-50 px-2 py-0.5 rounded">Desplazamiento I</span>
+              <i data-lucide="user-check" class="w-5 h-5 text-bronze-600"></i>
+            </div>
+            <h3 class="font-title font-bold text-leather-900 text-lg">El Sujeto de Intervención</h3>
+            <p class="mt-2 text-xs font-mono text-ink-light line-through">Del individuo aislado y descontextualizado</p>
+            <p class="mt-1 text-sm font-serif text-ink leading-snug">
+              <strong>Hacia el sujeto en su trama vincular, territorial e histórica.</strong> El sujeto se constituye en una red de interacciones cotidianas y memorias colectivas.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-parchment-200 text-xs font-mono text-bronze-700">
+            Aporte clave: E. Pichon-Rivière & A. Carballeda
+          </div>
+        </div>
+
+        <div class="parchment-card rounded-lg p-5 border-t-4 border-t-wax flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-mono font-bold uppercase text-wax bg-red-50 px-2 py-0.5 rounded">Desplazamiento II</span>
+              <i data-lucide="heart-pulse" class="w-5 h-5 text-wax"></i>
+            </div>
+            <h3 class="font-title font-bold text-leather-900 text-lg">El Objeto de Lectura</h3>
+            <p class="mt-2 text-xs font-mono text-ink-light line-through">Del síntoma o déficit individual patologizado</p>
+            <p class="mt-1 text-sm font-serif text-ink leading-snug">
+              <strong>Hacia el sufrimiento social como respuesta situada</strong> frente a condiciones objetivas de exclusión e intemperie institucional.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-parchment-200 text-xs font-mono text-wax">
+            Aporte clave: Alfredo Moffatt (Psicoterapia del Oprimido)
+          </div>
+        </div>
+
+        <div class="parchment-card rounded-lg p-5 border-t-4 border-t-leather-800 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-mono font-bold uppercase text-leather-800 bg-parchment-200 px-2 py-0.5 rounded">Desplazamiento III</span>
+              <i data-lucide="network" class="w-5 h-5 text-leather-800"></i>
+            </div>
+            <h3 class="font-title font-bold text-leather-900 text-lg">La Estrategia</h3>
+            <p class="mt-2 text-xs font-mono text-ink-light line-through">De la derivación burocrática y puntual</p>
+            <p class="mt-1 text-sm font-serif text-ink leading-snug">
+              <strong>Hacia la articulación de redes de corresponsabilidad</strong> capaces de sostener procesos colectivos organizados en torno a una tarea compartida.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-parchment-200 text-xs font-mono text-leather-800">
+            Aporte clave: Elina Dabas & Mario Rovere
+          </div>
+        </div>
+      </div>
+
+      <div class="parchment-card rounded-xl p-6">
+        <h3 class="font-title font-bold text-leather-900 text-xl flex items-center gap-2 mb-4">
+          <i data-lucide="scale" class="w-5 h-5 text-bronze-600"></i>
+          <span>Las Tensiones Estructurales: La Balanza Ética del Operador</span>
+        </h3>
+        <p class="text-sm font-serif text-ink-muted mb-5">
+          En el territorio, las tensiones no se resuelven cancelando uno de sus extremos. La postura psicosocial exige sostenerlas dialécticamente:
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-parchment-100 p-4 rounded-lg border border-parchment-200">
+            <h4 class="font-title font-bold text-sm text-leather-900 flex items-center justify-between">
+              <span>Urgencia vs. Proceso</span>
+              <span class="text-xs font-mono text-bronze-600">Dialéctica I</span>
+            </h4>
+            <p class="text-xs font-serif text-ink-muted mt-2 leading-relaxed">
+              Atender la urgencia inmediata es éticamente inexcusable. Sin embargo, operar <em>únicamente</em> bajo el apremio funciona como una defensa inconsciente para evitar reflexionar sobre los factores estructurales que la engendran.
+            </p>
+          </div>
+          
+          <div class="bg-parchment-100 p-4 rounded-lg border border-parchment-200">
+            <h4 class="font-title font-bold text-sm text-leather-900 flex items-center justify-between">
+              <span>Asistencia vs. Intervención</span>
+              <span class="text-xs font-mono text-bronze-600">Dialéctica II</span>
+            </h4>
+            <p class="text-xs font-serif text-ink-muted mt-2 leading-relaxed">
+              La mera asistencia sin lectura psicosocial cronifica la dependencia de recursos. La intervención sin asistencia material degenera en una abstracción discursiva insensible frente al hambre o la desprotección real.
+            </p>
+          </div>
+
+          <div class="bg-parchment-100 p-4 rounded-lg border border-parchment-200">
+            <h4 class="font-title font-bold text-sm text-leather-900 flex items-center justify-between">
+              <span>Participación vs. Representación</span>
+              <span class="text-xs font-mono text-bronze-600">Dialéctica III</span>
+            </h4>
+            <p class="text-xs font-serif text-ink-muted mt-2 leading-relaxed">
+              Convocar a asambleas o reuniones no garantiza igualdad: quien tiene mayor capital social o simbólico suele acaparar la palabra. Los jóvenes y sectores precarizados quedan invisibilizados bajo una ilusión democrática formal.
+            </p>
+          </div>
+
+          <div class="bg-parchment-100 p-4 rounded-lg border border-parchment-200">
+            <h4 class="font-title font-bold text-sm text-leather-900 flex items-center justify-between">
+              <span>ECRO vs. Lógicas del Territorio</span>
+              <span class="text-xs font-mono text-bronze-600">Dialéctica IV</span>
+            </h4>
+            <p class="text-xs font-serif text-ink-muted mt-2 leading-relaxed">
+              Riesgo de <em>sobreidentificación teórica</em> (Ana Quiroga): forzar la realidad comunitaria para que encaje en las etiquetas académicas previas. El ECRO debe ser un esquema abierto que se deje rectificar por la experiencia situada.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-6 flex justify-end">
+          <button onclick="switchTab('tab-video')" class="bg-leather-800 hover:bg-leather-700 text-parchment-100 px-4 py-2 rounded font-title text-xs font-semibold tracking-wider uppercase transition flex items-center gap-2">
+            <span>Ir al Laboratorio de Video</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-video" class="tab-content hidden space-y-6">
+      <div class="parchment-card rounded-xl p-5 sm:p-6">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between pb-4 mb-4 border-b border-parchment-200 gap-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 text-[11px] font-mono font-bold bg-wax text-white rounded">REGISTRO AUDIOVISUAL</span>
+              <span class="text-xs font-mono text-ink-light">Duración: 10 min 23 s</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-title font-bold text-leather-900 mt-1">
+              Laboratorio de Observación: Estrategias Comunitarias y Juventudes en Territorio
+            </h2>
+            <p class="text-xs sm:text-sm font-serif text-ink-muted">
+              Observá atentamente los discursos, las escenas de la esquina, las demandas vecinales y los espacios colectivos de trabajo.
+            </p>
+          </div>
+          
+          <div class="flex items-center gap-2">
+            <button onclick="addCurrentTimestampNote()" class="bg-bronze-600 hover:bg-bronze-500 text-white text-xs font-semibold px-3 py-2 rounded flex items-center gap-1.5 shadow">
+              <i data-lucide="bookmark-plus" class="w-4 h-4"></i>
+              <span>Insertar Marca en Notas</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Video Player + Note-taking Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- Video Frame Column -->
+          <div class="lg:col-span-7 flex flex-col space-y-3">
+            <div class="relative w-full rounded-lg overflow-hidden border-2 border-bronze-600/50 shadow-inner bg-black aspect-video">
+              <iframe 
+                id="yt-player"
+                class="w-full h-full"
+                src="https://www.youtube.com/embed/rhIqrnIpZ-0?enablejsapi=1&rel=0" 
+                title="Estrategias comunitarias para la inclusión social" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+              </iframe>
+            </div>
+
+            <!-- Pre-indexed Key Moments from the field recording -->
+            <div class="bg-parchment-100 p-3.5 rounded-lg border border-parchment-200">
+              <h4 class="text-xs font-title font-bold text-leather-900 mb-2 flex items-center gap-1.5">
+                <i data-lucide="clock" class="w-3.5 h-3.5 text-bronze-600"></i>
+                <span>Marcas de Análisis Sugeridas para el TP:</span>
+              </h4>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs font-mono">
+                <button onclick="seekVideoNote('01:15')" class="p-1.5 text-left rounded bg-white hover:bg-bronze-50 border border-parchment-300 text-ink truncate">
+                  <strong class="text-bronze-700">01:15</strong> • La esquina y el barrio
+                </button>
+                <button onclick="seekVideoNote('03:40')" class="p-1.5 text-left rounded bg-white hover:bg-bronze-50 border border-parchment-300 text-ink truncate">
+                  <strong class="text-bronze-700">03:40</strong> • Demanda cristalizada
+                </button>
+                <button onclick="seekVideoNote('05:55')" class="p-1.5 text-left rounded bg-white hover:bg-bronze-50 border border-parchment-300 text-ink truncate">
+                  <strong class="text-bronze-700">05:55</strong> • Trabajo & Pertenencia
+                </button>
+                <button onclick="seekVideoNote('07:20')" class="p-1.5 text-left rounded bg-white hover:bg-bronze-50 border border-parchment-300 text-ink truncate">
+                  <strong class="text-bronze-700">07:20</strong> • Redes y referentes
+                </button>
+                <button onclick="seekVideoNote('08:45')" class="p-1.5 text-left rounded bg-white hover:bg-bronze-50 border border-parchment-300 text-ink truncate">
+                  <strong class="text-bronze-700">08:45</strong> • Tarea compartida
+                </button>
+                <button onclick="seekVideoNote('09:50')" class="p-1.5 text-left rounded bg-white hover:bg-bronze-50 border border-parchment-300 text-ink truncate">
+                  <strong class="text-bronze-700">09:50</strong> • Proyección colectiva
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Observation Field Notes Column -->
+          <div class="lg:col-span-5 flex flex-col space-y-2">
+            <div class="flex items-center justify-between">
+              <label for="field-notes" class="text-xs font-title font-bold text-leather-900 uppercase tracking-wide flex items-center gap-1.5">
+                <i data-lucide="clipboard-list" class="w-4 h-4 text-bronze-600"></i>
+                <span>Diario de Campo / Notas de Observación</span>
+              </label>
+              <button onclick="clearFieldNotes()" class="text-[11px] text-ink-light hover:text-wax font-mono underline">
+                Limpiar notas
+              </button>
+            </div>
+            
+            <textarea 
+              id="field-notes" 
+              rows="12" 
+              placeholder="Tomá aquí tus apuntes en vivo mientras mirás el video. Ejemplo:
+[01:15] Relatos sobre el repliegue vecinal...
+[03:40] Emergente: estigmatización hacia las y los jóvenes...
+[06:10] Dispositivo de taller y restitución del lazo..."
+              class="w-full flex-grow p-3 rounded-lg border border-bronze-400 bg-[#FCFAF5] font-mono text-xs text-ink focus:ring-2 focus:ring-bronze-500 focus:outline-none transition leading-relaxed"
+              oninput="autoSaveData()"
+            ></textarea>
+
+            <div class="flex items-center justify-between text-[11px] font-mono text-ink-muted">
+              <span>Guardado automático al escribir</span>
+              <span id="notes-word-count">0 palabras</span>
+            </div>
+            
+            <div class="bg-bronze-50 border-l-4 border-bronze-600 p-2.5 rounded text-[11px] font-serif text-ink-muted">
+              <strong>Tip de cátedra:</strong> Usá estas notas como insumo directo para responder las preguntas de la sección 3.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-tp" class="tab-content hidden space-y-6">
+      
+      <!-- Student Data Card -->
+      <div class="parchment-card rounded-xl p-5 border-l-4 border-l-leather-900">
+        <h3 class="text-sm font-title font-bold text-leather-900 uppercase tracking-wider mb-3 flex items-center gap-2">
+          <i data-lucide="users" class="w-4 h-4 text-bronze-600"></i>
+          <span>Ficha de Identificación del Equipo de Intervención</span>
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-mono font-semibold text-ink-muted mb-1">Integrantes del Equipo:</label>
+            <input type="text" id="student-names" placeholder="Apellidos y Nombres" class="w-full px-3 py-1.5 rounded border border-parchment-300 text-xs font-serif bg-white focus:ring-1 focus:ring-bronze-500 focus:outline-none" oninput="autoSaveData()">
+          </div>
+          <div>
+            <label class="block text-xs font-mono font-semibold text-ink-muted mb-1">Comisión / Turno / Año:</label>
+            <input type="text" id="student-commission" placeholder="Comisión A - 4to Año" class="w-full px-3 py-1.5 rounded border border-parchment-300 text-xs font-serif bg-white focus:ring-1 focus:ring-bronze-500 focus:outline-none" oninput="autoSaveData()">
+          </div>
+          <div>
+            <label class="block text-xs font-mono font-semibold text-ink-muted mb-1">Docente / Coordinador de Prácticas:</label>
+            <input type="text" id="student-teacher" placeholder="Nombre de la/el Docente" class="w-full px-3 py-1.5 rounded border border-parchment-300 text-xs font-serif bg-white focus:ring-1 focus:ring-bronze-500 focus:outline-none" oninput="autoSaveData()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Question Accordion / Blocks Container -->
+      <div class="space-y-5" id="questions-container">
+        
+        <!-- BLOQUE 1 -->
+        <div class="parchment-card rounded-xl p-5 sm:p-6 border-t-4 border-t-bronze-600">
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <div>
+              <span class="text-xs font-mono font-bold uppercase text-bronze-700 bg-bronze-100 px-2 py-0.5 rounded">Eje Temático I</span>
+              <h3 class="text-lg font-title font-bold text-leather-900 mt-1">
+                Territorio y Sufrimiento Social: Del Déficit a la Producción Sociohistórica
+              </h3>
+              <p class="text-xs font-serif text-ink-muted italic">Articulación con Alfredo Moffatt y Alfredo Carballeda</p>
+            </div>
+            <span id="badge-q1" class="text-xs font-mono px-2 py-0.5 rounded bg-parchment-200 text-ink-muted">Pendiente</span>
+          </div>
+
+          <div class="space-y-4 pt-2">
+            <!-- Pregunta 1.1 -->
+            <div class="space-y-1.5">
+              <label for="q1" class="block text-sm font-semibold text-leather-900 font-serif">
+                1. El territorio como espacio producido:
+              </label>
+              <p class="text-xs text-ink-muted font-serif">
+                A partir de los relatos y testimonios del video, ¿qué elementos permiten leer el barrio como un <strong>espacio producido</strong> por relaciones de poder, tensiones y memorias colectivas, y no como un mero escenario físico estático?
+              </p>
+              <textarea id="q1" rows="4" class="question-input w-full p-3 rounded-lg border border-parchment-300 bg-white font-serif text-xs sm:text-sm text-ink focus:ring-2 focus:ring-bronze-500 focus:outline-none transition leading-relaxed" placeholder="Desarrolle aquí su análisis situando ejemplos concretos del registro audiovisual..." oninput="autoSaveData()"></textarea>
+              <div class="flex justify-between text-[11px] font-mono text-ink-light">
+                <span>Criterio: Articular memoria colectiva, marcas urbanas y espacio producido.</span>
+                <span id="words-q1">0 palabras</span>
+              </div>
+            </div>
+
+            <!-- Pregunta 1.2 -->
+            <div class="space-y-1.5 pt-2 border-t border-parchment-200">
+              <label for="q2" class="block text-sm font-semibold text-leather-900 font-serif">
+                2. Sufrimiento social vs. Déficit individual:
+              </label>
+              <p class="text-xs text-ink-muted font-serif">
+                En diálogo con Moffatt, ¿cómo se deconstruye la idea de que la precariedad de los jóvenes es una patología individual? Expliquen cómo el sufrimiento psicosocial opera como respuesta situada a condiciones objetivas de exclusión e intemperie institucional.
+              </p>
+              <textarea id="q2" rows="4" class="question-input w-full p-3 rounded-lg border border-parchment-300 bg-white font-serif text-xs sm:text-sm text-ink focus:ring-2 focus:ring-bronze-500 focus:outline-none transition leading-relaxed" placeholder="Desarrolle el concepto de padeciente social..." oninput="autoSaveData()"></textarea>
+              <div class="flex justify-between text-[11px] font-mono text-ink-light">
+                <span>Criterio: Desarticular la mirada clínica tradicional descontextualizada.</span>
+                <span id="words-q2">0 palabras</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOQUE 2 -->
+        <div class="parchment-card rounded-xl p-5 sm:p-6 border-t-4 border-t-bronze-600">
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <div>
+              <span class="text-xs font-mono font-bold uppercase text-bronze-700 bg-bronze-100 px-2 py-0.5 rounded">Eje Temático II</span>
+              <h3 class="text-lg font-title font-bold text-leather-900 mt-1">
+                Deconstrucción de la Demanda y Construcción del Problema
+              </h3>
+              <p class="text-xs font-serif text-ink-muted italic">Articulación con Enrique Pichon-Rivière: Necesidad, Demanda, Problema y Emergente</p>
+            </div>
+            <span id="badge-q2" class="text-xs font-mono px-2 py-0.5 rounded bg-parchment-200 text-ink-muted">Pendiente</span>
+          </div>
+
+          <div class="space-y-4 pt-2">
+            <!-- Pregunta 2.1 -->
+            <div class="space-y-1.5">
+              <label for="q3" class="block text-sm font-semibold text-leather-900 font-serif">
+                3. Interrogar la demanda cristalizada:
+              </label>
+              <p class="text-xs text-ink-muted font-serif">
+                En el territorio es común escuchar que <em>«los jóvenes en la esquina no quieren hacer nada»</em>. ¿Cómo interrogarían esa demanda para no responder mecánicamente a ella? ¿De qué proceso latente funciona como emergente pichoniano?
+              </p>
+              <textarea id="q3" rows="4" class="question-input w-full p-3 rounded-lg border border-parchment-300 bg-white font-serif text-xs sm:text-sm text-ink focus:ring-2 focus:ring-bronze-500 focus:outline-none transition leading-relaxed" placeholder="Analice la punta del iceberg: ¿qué duelos, falta de espacios o repliegues subjetivos se ocultan tras esa frase?..." oninput="autoSaveData()"></textarea>
+              <div class="flex justify-between text-[11px] font-mono text-ink-light">
+                <span>Criterio: Diferenciar necesidad real, demanda explícita y problema de intervención.</span>
+                <span id="words-q3">0 palabras</span>
+              </div>
+            </div>
+
+            <!-- Pregunta 2.2 -->
+            <div class="space-y-1.5 pt-2 border-t border-parchment-200">
+              <label for="q4" class="block text-sm font-semibold text-leather-900 font-serif">
+                4. Formulación del problema e hipótesis diagnóstica:
+              </label>
+              <p class="text-xs text-ink-muted font-serif">
+                Formulen una definición del <strong>problema de intervención</strong> que desactive el rol de «chivo emisario» depositado en la juventud y habilite posibilidades de acción participativa.
+              </p>
+              <textarea id="q4" rows="4" class="question-input w-full p-3 rounded-lg border border-parchment-300 bg-white font-serif text-xs sm:text-sm text-ink focus:ring-2 focus:ring-bronze-500 focus:outline-none transition leading-relaxed" placeholder="Enuncie la hipótesis diagnóstica como una construcción revisable..." oninput="autoSaveData()"></textarea>
+              <div class="flex justify-between text-[11px] font-mono text-ink-light">
+                <span>Criterio: Construir un problema que no culpabilice al sujeto que padece.</span>
+                <span id="words-q4">0 palabras</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOQUE 3 -->
+        <div class="parchment-card rounded-xl p-5 sm:p-6 border-t-4 border-t-bronze-600">
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <div>
+              <span class="text-xs font-mono font-bold uppercase text-bronze-700 bg-bronze-100 px-2 py-0.5 rounded">Eje Temático III</span>
+              <h3 class="text-lg font-title font-bold text-leather-900 mt-1">
+                La Trama Relacional y las Redes Comunitarias
+              </h3>
+              <p class="text-xs font-serif text-ink-muted italic">Articulación con Elina Dabas y Mario Rovere</p>
+            </div>
+            <span id="badge-q3" class="text-xs font-mono px-2 py-0.5 rounded bg-parchment-200 text-ink-muted">Pendiente</span>
+          </div>
+
+          <div class="space-y-4 pt-2">
+            <!-- Pregunta 3.1 -->
+            <div class="space-y-1.5">
+              <label for="q5" class="block text-sm font-semibold text-leather-900 font-serif">
+                5. Mapeo de actores y tramas preexistentes:
+              </label>
+              <p class="text-xs text-ink-muted font-serif">
+                El operador no «funda» redes desde cero, sino que visibiliza y dinamiza tramas previas. Identifiquen los actores presentes y ausentes en la situación observada (organizaciones barriales, escuela, centro de salud, comedores, familias) y señalen quiénes funcionan como <em>«actores puente»</em>.
+              </p>
+              <textarea id="q5" rows="4" class="question-input w-full p-3 rounded-lg border border-parchment-300 bg-white font-serif text-xs sm:text-sm text-ink focus:ring-2 focus:ring-bronze-500 focus:outline-none transition leading-relaxed" placeholder="Describa posiciones, recursos e intereses de los actores del mapa vincular..." oninput="autoSaveData()"></textarea>
+              <div class="flex justify-between text-[11px] font-mono text-ink-light">
+                <span>Criterio: Identificar recursos institucionales y lazos informales.</span>
+                <span id="words-q5">0 palabras</span>
+              </div>
+            </div>
+
+            <!-- Pregunta 3.2 -->
+            <div class="space-y-1.5 pt-2 border-t border-parchment-200">
+              <label for="q6" class="block text-sm font-semibold text-leather-900 font-serif">
+                6. Articulación interinstitucional vs. Derivación:
+              </label>
+              <p class="text-xs text-ink-muted font-serif">
+                ¿Qué diferencias éticas y operativas existen entre la «derivación burocrática» y la «articulación corresponsable»? ¿Qué condiciones hacen posible que diversos actores construyan una lectura compartida del territorio sin anular sus conflictos?
+              </p>
+              <textarea id="q6" rows="4" class="question-input w-full p-3 rounded-lg border border-parchment-300 bg-white font-serif text-xs sm:text-sm text-ink focus:ring-2 focus:ring-bronze-500 focus:outline-none transition leading-relaxed" placeholder="Analice la corresponsabilidad y el trabajo en red..." oninput="autoSaveData()"></textarea>
+              <div class="flex justify-between text-[11px] font-mono text-ink-light">
+                <span>Criterio: Diferenciar coordinación de agendas de tarea interinstitucional.</span>
+                <span id="words-q6">0 palabras</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOQUE 4 -->
+        <div class="parchment-card rounded-xl p-5 sm:p-6 border-t-4 border-t-bronze-600">
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <div>
+              <span class="text-xs font-mono font-bold uppercase text-bronze-700 bg-bronze-100 px-2 py-0.5 rounded">Eje Temático IV</span>
+              <h3 class="text-lg font-title font-bold text-leather-900 mt-1">
+                La Implicación del Operador y las Tensiones Éticas
+              </h3>
+              <p class="text-xs font-serif text-ink-muted italic">Articulación con Ana Quiroga y la dimensión referencial del ECRO</p>
+            </div>
+            <span id="badge-q4" class="text-xs font-mono px-2 py-0.5 rounded bg-parchment-200 text-ink-muted">Pendiente</span>
+          </div>
+
+          <div class="space-y-4 pt-2">
+            <!-- Pregunta 4.1 -->
+            <div class="space-y-1.5">
+              <label for="q7" class="block text-sm font-semibold text-leather-900 font-serif">
+                7. Implicación y matrices de aprendizaje:
+              </label>
+              <p class="text-xs text-ink-muted font-serif">
+                Al ingresar al barrio del video, ¿qué matrices de aprendizaje, prejuicios de clase o deseos de solución rápida podrían activarse en el equipo psicosocial? ¿Por qué la implicación no es un defecto personal sino una condición metodológica ineludible para operar?
+              </p>
+              <textarea id="q7" rows="4" class="question-input w-full p-3 rounded-lg border border-parchment-300 bg-white font-serif text-xs sm:text-sm text-ink focus:ring-2 focus:ring-bronze-500 focus:outline-none transition leading-relaxed" placeholder="Reflexione sobre la distancia defensiva, la sobreidentificación y el dispositivo de supervisión..." oninput="autoSaveData()"></textarea>
+              <div class="flex justify-between text-[11px] font-mono text-ink-light">
+                <span>Criterio: Autorreflexión crítica sobre el posicionamiento profesional.</span>
+                <span id="words-q7">0 palabras</span>
+              </div>
+            </div>
+
+            <!-- Pregunta 4.2 -->
+            <div class="space-y-1.5 pt-2 border-t border-parchment-200">
+              <label for="q8" class="block text-sm font-semibold text-leather-900 font-serif">
+                8. La balanza ética en acción:
+              </label>
+              <p class="text-xs text-ink-muted font-serif">
+                Elijan una de las tensiones estructurales del cuaderno (<em>Urgencia vs. Proceso</em> o <em>Asistencia vs. Intervención</em>). ¿Cómo se evidencia esta tensión en las iniciativas de inclusión laboral y talleres mostradas en el video? ¿Cómo sostener ambos polos sin claudicar en ninguno?
+              </p>
+              <textarea id="q8" rows="4" class="question-input w-full p-3 rounded-lg border border-parchment-300 bg-white font-serif text-xs sm:text-sm text-ink focus:ring-2 focus:ring-bronze-500 focus:outline-none transition leading-relaxed" placeholder="Analice dialécticamente la tensión elegida..." oninput="autoSaveData()"></textarea>
+              <div class="flex justify-between text-[11px] font-mono text-ink-light">
+                <span>Criterio: Evitar la resolución simplista o reduccionista de la complejidad.</span>
+                <span id="words-q8">0 palabras</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOQUE 5 -->
+        <div class="parchment-card rounded-xl p-5 sm:p-6 border-t-4 border-t-leather-900">
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <div>
+              <span class="text-xs font-mono font-bold uppercase text-leather-800 bg-parchment-200 px-2 py-0.5 rounded">Eje Temático V • Cierre y Proyección</span>
+              <h3 class="text-lg font-title font-bold text-leather-900 mt-1">
+                De la Trama Territorial al Dispositivo Grupal (Hacia la Unidad IV)
+              </h3>
+              <p class="text-xs font-serif text-ink-muted italic">Articulación con el Grupo Operativo y la Clínica Social</p>
+            </div>
+            <span id="badge-q5" class="text-xs font-mono px-2 py-0.5 rounded bg-parchment-200 text-ink-muted">Pendiente</span>
+          </div>
+
+          <div class="space-y-4 pt-2">
+            <!-- Pregunta 5.1 -->
+            <div class="space-y-1.5">
+              <label for="q9" class="block text-sm font-semibold text-leather-900 font-serif">
+                9. Hipótesis de Intervención y Diseño del Dispositivo:
+              </label>
+              <p class="text-xs text-ink-muted font-serif">
+                Si su equipo fuera convocado a intervenir con los jóvenes y referentes de este territorio: ¿Qué propuesta de dispositivo grupal diseñarían? ¿Cuál sería la <strong>tarea compartida</strong> capaz de vehiculizar las ansiedades básicas y restituir la palabra y el lazo social?
+              </p>
+              <textarea id="q9" rows="5" class="question-input w-full p-3 rounded-lg border border-parchment-300 bg-white font-serif text-xs sm:text-sm text-ink focus:ring-2 focus:ring-bronze-500 focus:outline-none transition leading-relaxed" placeholder="Describa el encuadre, los objetivos, los actores convocados y la tarea explícita..." oninput="autoSaveData()"></textarea>
+              <div class="flex justify-between text-[11px] font-mono text-ink-light">
+                <span>Criterio: Coherencia entre el diagnóstico construido y la propuesta operativa.</span>
+                <span id="words-q9">0 palabras</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Actions -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 bg-parchment-100 rounded-lg border border-parchment-300">
+        <span class="text-xs font-mono text-ink-muted" id="total-words-tp">Total de palabras redactadas: 0</span>
+        <div class="flex items-center space-x-3">
+          <button onclick="switchTab('tab-exportar')" class="bg-bronze-600 hover:bg-bronze-500 text-white font-title text-xs font-bold px-4 py-2 rounded transition shadow flex items-center gap-1.5">
+            <i data-lucide="eye" class="w-4 h-4"></i>
+            <span>Ver Informe & Rúbrica</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-cartografia" class="tab-content hidden space-y-6">
+      <div class="parchment-card rounded-xl p-6">
+        <div class="border-b border-parchment-200 pb-4 mb-5">
+          <span class="text-xs font-mono font-bold uppercase text-bronze-700 bg-bronze-100 px-2 py-0.5 rounded">Cartografía Operativa</span>
+          <h2 class="text-xl sm:text-2xl font-title font-bold text-leather-900 mt-1">
+            La Brújula del Operador Psicosocial en el Campo Comunitario
+          </h2>
+          <p class="text-sm font-serif text-ink-muted">
+            Mapa interactivo de los vectores teóricos que vertebran el pasaje desde el territorio hacia la tarea grupal.
+          </p>
+        </div>
+
+        <!-- Interactive Map Diagram -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          
+          <!-- Node 1 -->
+          <div onclick="showMapDetail('territorio')" class="cursor-pointer bg-white p-4 rounded-lg border border-parchment-300 hover:border-bronze-500 hover:shadow-md transition">
+            <div class="flex items-center justify-between text-bronze-600 mb-2">
+              <span class="font-mono text-xs font-bold uppercase">1. Suelo Epistemológico</span>
+              <i data-lucide="map-pin" class="w-4 h-4"></i>
+            </div>
+            <h4 class="font-title font-bold text-sm text-leather-900">Territorio Producido</h4>
+            <p class="text-xs font-serif text-ink-muted mt-1 line-clamp-2">
+              Espacio no estático atravesado por memorias, despojos y relaciones de poder.
+            </p>
+            <span class="inline-block mt-2 text-[11px] font-mono text-bronze-700 underline">Ver articulación →</span>
+          </div>
+
+          <!-- Node 2 -->
+          <div onclick="showMapDetail('sufrimiento')" class="cursor-pointer bg-white p-4 rounded-lg border border-parchment-300 hover:border-bronze-500 hover:shadow-md transition">
+            <div class="flex items-center justify-between text-wax mb-2">
+              <span class="font-mono text-xs font-bold uppercase">2. Sujeto en Situación</span>
+              <i data-lucide="heart" class="w-4 h-4"></i>
+            </div>
+            <h4 class="font-title font-bold text-sm text-leather-900">Sufrimiento Social</h4>
+            <p class="text-xs font-serif text-ink-muted mt-1 line-clamp-2">
+              El padecimiento como respuesta subjetiva situada a la exclusión (Moffatt).
+            </p>
+            <span class="inline-block mt-2 text-[11px] font-mono text-wax underline">Ver articulación →</span>
+          </div>
+
+          <!-- Node 3 -->
+          <div onclick="showMapDetail('implicacion')" class="cursor-pointer bg-white p-4 rounded-lg border border-parchment-300 hover:border-bronze-500 hover:shadow-md transition">
+            <div class="flex items-center justify-between text-leather-800 mb-2">
+              <span class="font-mono text-xs font-bold uppercase">3. Dimensión Referencial</span>
+              <i data-lucide="compass" class="w-4 h-4"></i>
+            </div>
+            <h4 class="font-title font-bold text-sm text-leather-900">Implicación & ECRO Abierto</h4>
+            <p class="text-xs font-serif text-ink-muted mt-1 line-clamp-2">
+              Ruptura con la neutralidad. El esquema que se deja sorprender por el campo (Pichon-Rivière/Quiroga).
+            </p>
+            <span class="inline-block mt-2 text-[11px] font-mono text-leather-800 underline">Ver articulación →</span>
+          </div>
+
+          <!-- Node 4 -->
+          <div onclick="showMapDetail('demanda')" class="cursor-pointer bg-white p-4 rounded-lg border border-parchment-300 hover:border-bronze-500 hover:shadow-md transition">
+            <div class="flex items-center justify-between text-bronze-600 mb-2">
+              <span class="font-mono text-xs font-bold uppercase">4. Operación Diagnóstica</span>
+              <i data-lucide="help-circle" class="w-4 h-4"></i>
+            </div>
+            <h4 class="font-title font-bold text-sm text-leather-900">Demanda vs. Problema</h4>
+            <p class="text-xs font-serif text-ink-muted mt-1 line-clamp-2">
+              Deconstrucción del chivo emisario para construir hipótesis de intervención revisables.
+            </p>
+            <span class="inline-block mt-2 text-[11px] font-mono text-bronze-700 underline">Ver articulación →</span>
+          </div>
+
+          <!-- Node 5 -->
+          <div onclick="showMapDetail('redes')" class="cursor-pointer bg-white p-4 rounded-lg border border-parchment-300 hover:border-bronze-500 hover:shadow-md transition">
+            <div class="flex items-center justify-between text-leather-800 mb-2">
+              <span class="font-mono text-xs font-bold uppercase">5. Dimensión Relacional</span>
+              <i data-lucide="share-2" class="w-4 h-4"></i>
+            </div>
+            <h4 class="font-title font-bold text-sm text-leather-900">Articulación en Red</h4>
+            <p class="text-xs font-serif text-ink-muted mt-1 line-clamp-2">
+              Construcción de una tarea compartida y corresponsable (Dabas/Rovere).
+            </p>
+            <span class="inline-block mt-2 text-[11px] font-mono text-leather-800 underline">Ver articulación →</span>
+          </div>
+
+          <!-- Node 6 -->
+          <div onclick="showMapDetail('proyeccion')" class="cursor-pointer bg-white p-4 rounded-lg border border-parchment-300 hover:border-bronze-500 hover:shadow-md transition">
+            <div class="flex items-center justify-between text-emerald-700 mb-2">
+              <span class="font-mono text-xs font-bold uppercase">6. Hacia la Unidad IV</span>
+              <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+            </div>
+            <h4 class="font-title font-bold text-sm text-leather-900">El Grupo Operativo</h4>
+            <p class="text-xs font-serif text-ink-muted mt-1 line-clamp-2">
+              El pasaje del "dónde y con quiénes" al "con qué dispositivos" grupales y clínicos situados.
+            </p>
+            <span class="inline-block mt-2 text-[11px] font-mono text-emerald-700 underline">Ver articulación →</span>
+          </div>
+
+        </div>
+
+        <!-- Detail Box for selected node -->
+        <div id="map-detail-card" class="mt-6 p-5 rounded-lg bg-parchment-100 border border-bronze-400">
+          <div class="flex items-center justify-between">
+            <h3 id="map-detail-title" class="font-title font-bold text-leather-900 text-base">
+              Seleccioná cualquier nodo de la brújula para profundizar su articulación
+            </h3>
+            <span id="map-detail-author" class="text-xs font-mono text-bronze-700 font-bold">Unidad III</span>
+          </div>
+          <p id="map-detail-desc" class="text-xs sm:text-sm font-serif text-ink-muted mt-2 leading-relaxed">
+            Hacé clic en cualquiera de las 6 tarjetas superiores para desplegar las citas teóricas textuales, autores principales y su aplicación directa a las preguntas del trabajo práctico.
+          </p>
+        </div>
+
+        <!-- The 3 Constitutive Dispositions -->
+        <div class="mt-8 pt-6 border-t border-parchment-300">
+          <h3 class="font-title font-bold text-leather-900 text-base mb-3 flex items-center gap-2">
+            <i data-lucide="eye" class="w-4 h-4 text-bronze-600"></i>
+            <span>Las 3 Disposiciones Constitutivas del Operador (Semana 12)</span>
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-serif">
+            <div class="p-3 bg-white rounded border border-parchment-300">
+              <strong class="font-title text-leather-900 block mb-1">1. Escuchar antes que explicar</strong>
+              Tolerar la incertidumbre inicial. Prestar atención a las lógicas del campo antes de encasillarlas con fórmulas teóricas.
+            </div>
+            <div class="p-3 bg-white rounded border border-parchment-300">
+              <strong class="font-title text-leather-900 block mb-1">2. Sostener la complejidad</strong>
+              Evitar el reduccionismo. Identificar rápidamente a un "culpable único" clausura la posibilidad de un proceso sostenible.
+            </div>
+            <div class="p-3 bg-white rounded border border-parchment-300">
+              <strong class="font-title text-leather-900 block mb-1">3. Revisar el propio posicionamiento</strong>
+              Supervisión continua. Reconocer que la implicación profesional muta a medida que nos involucramos en el territorio.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="tab-exportar" class="tab-content hidden space-y-6">
+      
+      <!-- Rubric Self-Assessment -->
+      <div class="no-print parchment-card rounded-xl p-5 sm:p-6">
+        <h3 class="font-title font-bold text-leather-900 text-lg flex items-center gap-2 mb-2">
+          <i data-lucide="check-square" class="w-5 h-5 text-bronze-600"></i>
+          <span>Rúbrica de Autoevaluación de la Cátedra</span>
+        </h3>
+        <p class="text-xs font-serif text-ink-muted mb-4">
+          Marcá los ítems para verificar que el trabajo práctico cumple con los estándares epistemológicos exigidos antes de imprimir o entregar:
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-serif">
+          <label class="flex items-start gap-2.5 p-2.5 bg-white rounded border border-parchment-300 cursor-pointer hover:bg-bronze-50/50">
+            <input type="checkbox" id="rub-1" class="mt-0.5 rounded text-bronze-600 focus:ring-bronze-500" onchange="updateRubricScore()">
+            <span><strong>Articulación Conceptual:</strong> No se repiten definiciones abstractas, sino que se enlazan con situaciones y testimonios específicos del video.</span>
+          </label>
+          
+          <label class="flex items-start gap-2.5 p-2.5 bg-white rounded border border-parchment-300 cursor-pointer hover:bg-bronze-50/50">
+            <input type="checkbox" id="rub-2" class="mt-0.5 rounded text-bronze-600 focus:ring-bronze-500" onchange="updateRubricScore()">
+            <span><strong>Deconstrucción de la Demanda:</strong> Se problematiza el rol estigmatizante sobre las juventudes y se formula un problema de intervención con hipótesis revisables.</span>
+          </label>
+
+          <label class="flex items-start gap-2.5 p-2.5 bg-white rounded border border-parchment-300 cursor-pointer hover:bg-bronze-50/50">
+            <input type="checkbox" id="rub-3" class="mt-0.5 rounded text-bronze-600 focus:ring-bronze-500" onchange="updateRubricScore()">
+            <span><strong>Trama en Red:</strong> Se diferencian derivaciones burocráticas de articulaciones interinstitucionales con tarea compartida y corresponsabilidad.</span>
+          </label>
+
+          <label class="flex items-start gap-2.5 p-2.5 bg-white rounded border border-parchment-300 cursor-pointer hover:bg-bronze-50/50">
+            <input type="checkbox" id="rub-4" class="mt-0.5 rounded text-bronze-600 focus:ring-bronze-500" onchange="updateRubricScore()">
+            <span><strong>Ética de la Complejidad:</strong> Se reconocen las tensiones (urgencia/proceso, asistencia/intervención) sin resolverlas de manera ingenua o unilateral.</span>
+          </label>
+        </div>
+
+        <div class="mt-4 flex items-center justify-between pt-3 border-t border-parchment-300">
+          <span class="text-xs font-mono font-semibold text-leather-900" id="rubric-score-display">Autoevaluación: 0/4 criterios verificados</span>
+          <div class="flex gap-2">
+            <button onclick="copySubmissionToClipboard()" class="bg-parchment-200 hover:bg-parchment-300 text-leather-900 font-mono text-xs px-3 py-1.5 rounded transition flex items-center gap-1">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              <span>Copiar Texto Completo</span>
+            </button>
+            <button onclick="window.print()" class="bg-leather-800 hover:bg-leather-700 text-parchment-100 font-title text-xs font-bold px-4 py-1.5 rounded transition flex items-center gap-1.5 shadow">
+              <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+              <span>Imprimir / Descargar PDF</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Printable Document Preview -->
+      <div id="printable-area" class="parchment-card rounded-xl p-6 sm:p-10 space-y-6">
+        
+        <!-- Header for Print & Review -->
+        <div class="border-b-2 border-leather-900 pb-5 text-center">
+          <span class="text-xs font-mono font-bold tracking-widest uppercase text-bronze-700 block">
+            CÁTEDRA DE PSICOLOGÍA SOCIAL • ESPECIALIZACIÓN EN INSERCIÓN Y PRÁCTICA PROFESIONAL
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-title font-bold text-leather-900 mt-1">
+            DEL TERRITORIO A LA TAREA
+          </h2>
+          <p class="text-sm font-serif italic text-ink-muted">
+            Trabajo Práctico Integrador de Cierre — Unidad III: Intervención Comunitaria y Políticas Públicas
+          </p>
+          
+          <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-mono bg-parchment-100 p-2.5 rounded border border-parchment-300 text-left">
+            <div><strong>Equipo:</strong> <span id="prev-names">—</span></div>
+            <div><strong>Comisión:</strong> <span id="prev-commission">—</span></div>
+            <div><strong>Docente:</strong> <span id="prev-teacher">—</span></div>
+          </div>
+        </div>
+
+        <!-- Rendered Responses -->
+        <div class="space-y-6 font-serif text-sm">
+          
+          <!-- Eje 1 Preview -->
+          <div class="space-y-3">
+            <h4 class="font-title font-bold text-base text-leather-900 border-b border-parchment-300 pb-1">
+              I. Territorio y Sufrimiento Social (Moffatt - Carballeda)
+            </h4>
+            <div>
+              <p class="font-semibold text-ink text-xs">1. El territorio como espacio producido:</p>
+              <div id="prev-q1" class="mt-1 p-3 bg-white/70 rounded border border-parchment-200 text-xs sm:text-sm text-ink-muted whitespace-pre-line italic">
+                (Sin respuesta registrada aún)
+              </div>
+            </div>
+            <div>
+              <p class="font-semibold text-ink text-xs">2. Sufrimiento social vs. déficit individual:</p>
+              <div id="prev-q2" class="mt-1 p-3 bg-white/70 rounded border border-parchment-200 text-xs sm:text-sm text-ink-muted whitespace-pre-line italic">
+                (Sin respuesta registrada aún)
+              </div>
+            </div>
+          </div>
+
+          <!-- Eje 2 Preview -->
+          <div class="space-y-3">
+            <h4 class="font-title font-bold text-base text-leather-900 border-b border-parchment-300 pb-1">
+              II. Deconstrucción de la Demanda y Problema (Pichon-Rivière)
+            </h4>
+            <div>
+              <p class="font-semibold text-ink text-xs">3. Interrogar la demanda cristalizada y emergente:</p>
+              <div id="prev-q3" class="mt-1 p-3 bg-white/70 rounded border border-parchment-200 text-xs sm:text-sm text-ink-muted whitespace-pre-line italic">
+                (Sin respuesta registrada aún)
+              </div>
+            </div>
+            <div>
+              <p class="font-semibold text-ink text-xs">4. Formulación del problema e hipótesis diagnóstica:</p>
+              <div id="prev-q4" class="mt-1 p-3 bg-white/70 rounded border border-parchment-200 text-xs sm:text-sm text-ink-muted whitespace-pre-line italic">
+                (Sin respuesta registrada aún)
+              </div>
+            </div>
+          </div>
+
+          <!-- Eje 3 Preview -->
+          <div class="space-y-3">
+            <h4 class="font-title font-bold text-base text-leather-900 border-b border-parchment-300 pb-1">
+              III. Trama Relacional y Redes Comunitarias (Dabas - Rovere)
+            </h4>
+            <div>
+              <p class="font-semibold text-ink text-xs">5. Mapeo de actores y tramas preexistentes:</p>
+              <div id="prev-q5" class="mt-1 p-3 bg-white/70 rounded border border-parchment-200 text-xs sm:text-sm text-ink-muted whitespace-pre-line italic">
+                (Sin respuesta registrada aún)
+              </div>
+            </div>
+            <div>
+              <p class="font-semibold text-ink text-xs">6. Articulación interinstitucional vs. Derivación:</p>
+              <div id="prev-q6" class="mt-1 p-3 bg-white/70 rounded border border-parchment-200 text-xs sm:text-sm text-ink-muted whitespace-pre-line italic">
+                (Sin respuesta registrada aún)
+              </div>
+            </div>
+          </div>
+
+          <!-- Eje 4 Preview -->
+          <div class="space-y-3">
+            <h4 class="font-title font-bold text-base text-leather-900 border-b border-parchment-300 pb-1">
+              IV. Implicación del Operador y Tensiones Éticas (Quiroga)
+            </h4>
+            <div>
+              <p class="font-semibold text-ink text-xs">7. Implicación, matrices y el ECRO abierto:</p>
+              <div id="prev-q7" class="mt-1 p-3 bg-white/70 rounded border border-parchment-200 text-xs sm:text-sm text-ink-muted whitespace-pre-line italic">
+                (Sin respuesta registrada aún)
+              </div>
+            </div>
+            <div>
+              <p class="font-semibold text-ink text-xs">8. Balanza ética de tensiones estructurales:</p>
+              <div id="prev-q8" class="mt-1 p-3 bg-white/70 rounded border border-parchment-200 text-xs sm:text-sm text-ink-muted whitespace-pre-line italic">
+                (Sin respuesta registrada aún)
+              </div>
+            </div>
+          </div>
+
+          <!-- Eje 5 Preview -->
+          <div class="space-y-3">
+            <h4 class="font-title font-bold text-base text-leather-900 border-b border-parchment-300 pb-1">
+              V. Dispositivo Grupal y Tarea (Hacia la Unidad IV)
+            </h4>
+            <div>
+              <p class="font-semibold text-ink text-xs">9. Hipótesis de intervención grupal operativa:</p>
+              <div id="prev-q9" class="mt-1 p-3 bg-white/70 rounded border border-parchment-200 text-xs sm:text-sm text-ink-muted whitespace-pre-line italic">
+                (Sin respuesta registrada aún)
+              </div>
+            </div>
+          </div>
+
+          <!-- Observation notes preview in print -->
+          <div class="mt-6 pt-4 border-t border-parchment-300 print-only">
+            <h4 class="font-title font-bold text-xs uppercase tracking-wider text-leather-900">Anexo: Diario de Campo y Marcas Temporales</h4>
+            <div id="prev-field-notes" class="text-xs font-mono mt-2 whitespace-pre-line text-ink-muted"></div>
+          </div>
+
+        </div>
+
+        <div class="pt-8 border-t border-parchment-300 flex justify-between items-center text-xs font-mono text-ink-light">
+          <span>Evaluación de Cátedra: Psicología Social 4to Año</span>
+          <span>Firma del Docente / Dictamen: _______________________</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="no-print bg-leather-900 text-parchment-200 text-xs font-mono py-4 border-t border-bronze-600 mt-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+      <div>
+        <span class="font-bold text-parchment-100">Cátedra de Psicología Social</span> • Unidad III: Intervención Comunitaria y Políticas Públicas
+      </div>
+      <div class="text-parchment-400">
+        "El operador no impone un sentido: articula condiciones para que el colectivo sostenga la tarea."
+      </div>
+    </div>
+  </footer>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="fixed bottom-5 right-5 bg-leather-900 text-parchment-100 border border-bronze-400 text-xs font-mono py-2 px-4 rounded shadow-2xl transition-opacity duration-300 opacity-0 pointer-events-none z-50 flex items-center gap-2">
+    <i data-lucide="info" class="w-4 h-4 text-bronze-400"></i>
+    <span id="toast-text">Mensaje</span>
+  </div>
+
+  <script>
+    // Tab switching system
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+      const activeContent = document.getElementById(tabId);
+      if (activeContent) activeContent.classList.remove('hidden');
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active-tab', 'text-parchment-100', 'border-bronze-400');
+        btn.classList.add('text-parchment-300', 'border-transparent');
+      });
+
+      const activeBtn = document.getElementById(`btn-${tabId}`);
+      if (activeBtn) {
+        activeBtn.classList.add('active-tab', 'text-parchment-100', 'border-bronze-400');
+        activeBtn.classList.remove('text-parchment-300', 'border-transparent');
+      }
+
+      if (tabId === 'tab-exportar') {
+        updatePrintPreview();
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Local Storage Keys & State
+    const STORAGE_KEY = 'psicologia_social_tp_unidad3_v1';
+
+    function getFormValues() {
+      const ids = ['student-names', 'student-commission', 'student-teacher', 'field-notes', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9'];
+      const data = {};
+      ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) data[id] = el.value;
+      });
+      data.rubric = [
+        document.getElementById('rub-1')?.checked || false,
+        document.getElementById('rub-2')?.checked || false,
+        document.getElementById('rub-3')?.checked || false,
+        document.getElementById('rub-4')?.checked || false,
+      ];
+      return data;
+    }
+
+    function autoSaveData() {
+      try {
+        const data = getFormValues();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        updateProgressAndWordCounts();
+        
+        const statusEl = document.getElementById('save-status');
+        if (statusEl) {
+          statusEl.innerHTML = '<span class="inline-block w-2 h-2 rounded-full bg-emerald-400 mr-2"></span><span>Guardado</span>';
+        }
+      } catch (err) {
+        console.error("Error saving data to localStorage", err);
+      }
+    }
+
+    function loadSavedData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        Object.keys(data).forEach(id => {
+          if (id !== 'rubric') {
+            const el = document.getElementById(id);
+            if (el) el.value = data[id] || '';
+          }
+        });
+        if (Array.isArray(data.rubric)) {
+          data.rubric.forEach((val, idx) => {
+            const el = document.getElementById(`rub-${idx+1}`);
+            if (el) el.checked = Boolean(val);
+          });
+          updateRubricScore();
+        }
+        updateProgressAndWordCounts();
+      } catch (err) {
+        console.error("Error restoring from localStorage", err);
+      }
+    }
+
+    function updateProgressAndWordCounts() {
+      const qIds = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8', 'q9'];
+      let answeredCount = 0;
+      let totalWords = 0;
+
+      qIds.forEach(id => {
+        const el = document.getElementById(id);
+        const text = el ? el.value.trim() : '';
+        const words = text ? text.split(/\s+/).filter(Boolean).length : 0;
+        totalWords += words;
+
+        const wordDisplay = document.getElementById(`words-${id}`);
+        if (wordDisplay) wordDisplay.textContent = `${words} palabras`;
+
+        if (words >= 15) answeredCount++;
+      });
+
+      // Update block badges
+      updateBlockBadge('badge-q1', ['q1', 'q2']);
+      updateBlockBadge('badge-q2', ['q3', 'q4']);
+      updateBlockBadge('badge-q3', ['q5', 'q6']);
+      updateBlockBadge('badge-q4', ['q7', 'q8']);
+      updateBlockBadge('badge-q5', ['q9']);
+
+      // Overall Progress
+      const badgeProgress = document.getElementById('badge-progress');
+      if (badgeProgress) badgeProgress.textContent = `${answeredCount}/9`;
+
+      const progressBar = document.getElementById('tp-progress-bar');
+      const percent = Math.round((answeredCount / 9) * 100);
+      if (progressBar) progressBar.style.width = `${percent}%`;
+
+      const totalWordsEl = document.getElementById('total-words-tp');
+      if (totalWordsEl) totalWordsEl.textContent = `Total de palabras redactadas: ${totalWords}`;
+
+      // Notes word count
+      const notesEl = document.getElementById('field-notes');
+      if (notesEl) {
+        const notesWords = notesEl.value.trim() ? notesEl.value.trim().split(/\s+/).filter(Boolean).length : 0;
+        const notesDisplay = document.getElementById('notes-word-count');
+        if (notesDisplay) notesDisplay.textContent = `${notesWords} palabras`;
+      }
+    }
+
+    function updateBlockBadge(badgeId, questionIds) {
+      const badge = document.getElementById(badgeId);
+      if (!badge) return;
+      const completed = questionIds.every(id => {
+        const val = document.getElementById(id)?.value.trim();
+        return val && val.split(/\s+/).length >= 15;
+      });
+
+      if (completed) {
+        badge.textContent = 'Completado';
+        badge.className = 'text-xs font-mono px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-semibold';
+      } else {
+        badge.textContent = 'En elaboración';
+        badge.className = 'text-xs font-mono px-2 py-0.5 rounded bg-parchment-200 text-ink-muted';
+      }
+    }
+
+    // Interactive Conceptual Map Data
+    const mapDetails = {
+      territorio: {
+        title: "El Territorio como Espacio Producido (A. Carballeda)",
+        author: "Semana 9 • Epistemología Territorial",
+        desc: "El territorio no es un mero escenario o decorado donde ocurren las cosas. Es una trama producida históricamente por relaciones de poder, conflictos por la tierra, memorias colectivas y marcas de despojo. Intervenir en él implica leer lo latente antes de pretender transformarlo."
+      },
+      sufrimiento: {
+        title: "Sufrimiento Social vs. Patología Individual (A. Moffatt)",
+        author: "Semana 9 • Psicoterapia del Oprimido",
+        desc: "El padecimiento psíquico de los sectores populares no debe reducirse a déficits neuróticos o clínicos individuales. Moffatt plantea que el sufrimiento es la respuesta subjetiva situada frente a la exclusión, la precariedad y la intemperie social. El padeciente social denuncia la crisis de la estructura que lo rodea."
+      },
+      implicacion: {
+        title: "Implicación y el ECRO como Esquema Abierto (A. Quiroga / E. Pichon-Rivière)",
+        author: "Semanas 9 y 12 • Matriz Referencial",
+        desc: "La neutralidad técnica es una ficción. El operador ingresa al territorio con sus matrices de aprendizaje, miedos y prejuicios de clase. Para que el ECRO sea operativo, debe mantenerse abierto y flexible: si no puede ser sorprendido por lo que el territorio revela, se convierte en un filtro ciego que solo confirma teorías previas."
+      },
+      demanda: {
+        title: "Deconstrucción de la Demanda y Emergente Comunitario (E. Pichon-Rivière)",
+        author: "Semana 10 • Diagnóstico Comunitario",
+        desc: "La demanda inicial en el territorio suele presentarse culpabilizante ('los pibes no quieren hacer nada'). Esa queja es la punta visible (emergente) de procesos latentes no tramitados: duelos comunitarios, repliegue subjetivo o falta de espacios. El diagnóstico psicosocial consiste en reformular la demanda en un problema de intervención abordable."
+      },
+      redes: {
+        title: "La Trama en Red: Articulación vs. Derivación (E. Dabas / M. Rovere)",
+        author: "Semana 11 • Dimensión Relacional",
+        desc: "El operador no 'funda' redes de la nada; dynamiza vínculos preexistentes. Rovere y Dabas señalan que la derivación suele ser un 'sacarse el caso de encima'. La articulación interinstitucional real exige construir una lectura compartida del problema y una distribución corresponsable de la tarea, asumiendo las diferencias de poder."
+      },
+      proyeccion: {
+        title: "Hacia la Unidad IV: El Grupo Operativo en la Clínica Social",
+        author: "Semana 12 • Proyección y Tarea",
+        desc: "La intervención comunitaria no termina en el diagnóstico: se proyecta en dispositivos grupales que restituyan la palabra. El Grupo Operativo pichoniano es el vehículo donde la clínica social aborda el sufrimiento territorializado, articulando roles, ansiedades básicas y transformación social concreta."
+      }
+    };
+
+    function showMapDetail(key) {
+      const data = mapDetails[key];
+      if (!data) return;
+      document.getElementById('map-detail-title').textContent = data.title;
+      document.getElementById('map-detail-author').textContent = data.author;
+      document.getElementById('map-detail-desc').textContent = data.desc;
+    }
+
+    // Video timestamp helpers
+    function seekVideoNote(timeStr) {
+      const notes = document.getElementById('field-notes');
+      if (!notes) return;
+      notes.value += `\n[Marca ${timeStr}]: `;
+      notes.focus();
+      showToast(`Marca ${timeStr} insertada en notas de campo.`);
+      autoSaveData();
+    }
+
+    function addCurrentTimestampNote() {
+      const now = new Date();
+      const timeStamp = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+      const notes = document.getElementById('field-notes');
+      if (notes) {
+        notes.value += `\n[${timeStamp} - Observación]: `;
+        notes.focus();
+        showToast('Marca horaria registrada en el diario de campo.');
+        autoSaveData();
+      }
+    }
+
+    function clearFieldNotes() {
+      const notes = document.getElementById('field-notes');
+      if (notes && notes.value.trim() !== '') {
+        notes.value = '';
+        autoSaveData();
+        showToast('Diario de campo vaciado.');
+      }
+    }
+
+    // Rubric Score Calculation
+    function updateRubricScore() {
+      let count = 0;
+      for (let i = 1; i <= 4; i++) {
+        if (document.getElementById(`rub-${i}`)?.checked) count++;
+      }
+      const display = document.getElementById('rubric-score-display');
+      if (display) display.textContent = `Autoevaluación: ${count}/4 criterios verificados`;
+      autoSaveData();
+    }
+
+    // Synchronize Form into Print / Final Report Preview
+    function updatePrintPreview() {
+      const names = document.getElementById('student-names')?.value.trim() || 'Sin registrar';
+      const comm = document.getElementById('student-commission')?.value.trim() || 'Sin registrar';
+      const teach = document.getElementById('student-teacher')?.value.trim() || 'Sin registrar';
+
+      document.getElementById('prev-names').textContent = names;
+      document.getElementById('prev-commission').textContent = comm;
+      document.getElementById('prev-teacher').textContent = teach;
+
+      for (let i = 1; i <= 9; i++) {
+        const val = document.getElementById(`q${i}`)?.value.trim();
+        const prevEl = document.getElementById(`prev-q${i}`);
+        if (prevEl) {
+          prevEl.textContent = val || '(Sin respuesta registrada aún)';
+          prevEl.className = val ? 'mt-1 p-3 bg-white rounded border border-parchment-300 text-xs sm:text-sm text-ink whitespace-pre-line' : 'mt-1 p-3 bg-white/70 rounded border border-parchment-200 text-xs sm:text-sm text-ink-muted whitespace-pre-line italic';
+        }
+      }
+
+      const notesVal = document.getElementById('field-notes')?.value.trim();
+      const prevNotes = document.getElementById('prev-field-notes');
+      if (prevNotes) prevNotes.textContent = notesVal || 'Sin notas de campo anexadas.';
+    }
+
+    // Clipboard copy helper
+    function copySubmissionToClipboard() {
+      updatePrintPreview();
+      const data = getFormValues();
+      const content = `TRABAJO PRÁCTICO INTEGRADOR: DEL TERRITORIO A LA TAREA
+Unidad III - Psicología Social (4to Año)
+Equipo: ${data['student-names']}
+Comisión: ${data['student-commission']}
+Docente: ${data['student-teacher']}
+
+=======================================================
+EJE I: TERRITORIO Y SUFRIMIENTO SOCIAL
+1. El territorio como espacio producido:
+${data['q1'] || '—'}
+
+2. Sufrimiento social vs. déficit individual:
+${data['q2'] || '—'}
+
+EJE II: DECONSTRUCCIÓN DE LA DEMANDA Y EL PROBLEMA
+3. Interrogar la demanda cristalizada:
+${data['q3'] || '—'}
+
+4. Formulación del problema e hipótesis:
+${data['q4'] || '—'}
+
+EJE III: TRAMA RELACIONAL Y REDES COMUNITARIAS
+5. Mapeo de actores y tramas:
+${data['q5'] || '—'}
+
+6. Articulación interinstitucional vs. derivación:
+${data['q6'] || '—'}
+
+EJE IV: IMPLICACIÓN Y TENSIONES ÉTICAS
+7. Implicación y matrices de aprendizaje:
+${data['q7'] || '—'}
+
+8. La balanza ética en acción:
+${data['q8'] || '—'}
+
+EJE V: DISPOSITIVO GRUPAL Y TAREA
+9. Hipótesis de intervención grupal:
+${data['q9'] || '—'}
+
+=======================================================
+NOTAS DE CAMPO:
+${data['field-notes'] || '—'}`;
+
+      const tempTextArea = document.createElement('textarea');
+      tempTextArea.value = content;
+      document.body.appendChild(tempTextArea);
+      tempTextArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempTextArea);
+
+      showToast('¡Texto completo copiado al portapapeles!');
+    }
+
+    // Guided Sample / Model Answers based on notebook
+    function loadSampleGuide() {
+      const sample = {
+        'student-names': 'García Mariana, Gómez Lucas, Rodríguez Sofía',
+        'student-commission': 'Comisión 2 - Turno Noche (4° Año)',
+        'student-teacher': 'Lic. A. Quiroga / Equipo Docente',
+        'field-notes': `[01:15] La calle sin asfaltar y la esquina como único punto de reunión juvenil. Marcas del repliegue social.\n[03:40] Testimonio barrial: 'Los pibes están ahí y no hacen nada'. Queja que opera como emergente.\n[05:55] Espacio del taller de oficios: los jóvenes expresan que no tenían dónde acudir; el taller restituye sentido de pertenencia.\n[08:10] Articulación entre comedor y escuela técnica para certificar saberes informales.`,
+        'q1': `El territorio barrial analizado no es un plano físico neutro, sino un espacio producido históricamente por sucesivos procesos de relocalización forzada y precarización laboral. Como enseña Alfredo Carballeda, el territorio se halla inscripto en los cuerpos y en las trayectorias de sus habitantes. Las esquinas donde los jóvenes se agrupan son la manifestación visible de un espacio desprovisto de clubes o centros culturales públicos, donde la geografía urbana reproduce las marcas de la segregación y la intemperie estatal.`,
+        'q2': `En consonancia con Alfredo Moffatt en 'Psicoterapia del Oprimido', la inacción o apatía juvenil observada no representa una anomalía psicológica individual ni una patología intrapsíquica, sino un sufrimiento social situado. Es la respuesta subjetiva ante la ausencia de un proyecto colectivo de futuro y la intemperie institucional. El joven en la esquina no 'elige' el déficit; encarna el emergente del sufrimiento de una comunidad fragmentada cuyos lazos de contención laboral y afectiva han sido vulnerados.`,
+        'q3': `La demanda vecinal 'los jóvenes no quieren hacer nada' debe ser interrogada como un emergente pichoniano. Representa la superficie manifiesta (lo visible) de un duelo comunitario no elaborado frente a la pérdida de seguridad barrial. Al escuchar esta demanda, la psicología social la interroga preguntando: ¿Qué dispositivos comunitarios existen para alojar sus deseos? ¿Por qué la mirada vecinal deposita en ellos el rol de 'chivo emisario'? Lo latente es el miedo y la impotencia colectiva que se descargan sobre el sector más vulnerable.`,
+        'q4': `Problema de intervención formulado: 'Construcción de dispositivos de participación y formación productiva comunitaria para jóvenes en situación de vulnerabilidad en articulación con las organizaciones del barrio'. Esta reformulación desplaza la culpabilidad del individuo hacia la carencia de tramas institucionales vinculantes, abriendo la posibilidad de crear espacios de protagonismo juvenil en lugar de meras medidas de vigilancia o tutela.`,
+        'q5': `Actores mapeados: Jóvenes de la esquina (población protagonista), referentes del comedor comunitario, docentes de la escuela secundaria local, trabajadoras del centro de atención primaria y familias del barrio. Como 'actores puente' se destacan los coordinadores del taller comunitario y una madre referente del comedor, capaces de traducir el lenguaje formal institucional al código barrial cotidiano, tejiendo lazos entre la desconfianza juvenil y la oferta formativa.`,
+        'q6': `La derivación burocrática se limita a remitir al joven con un comprobante de papel hacia un centro de adicciones o empleo lejano, desligándose de su trayectoria. En contraste, la articulación interinstitucional (Rovere / Dabas) exige que el centro de salud, el comedor y el taller se reúnan en una mesa de gestión para compartir el diagnóstico y asumir una tarea colectiva corresponsable, reconociendo las asimetrías de poder y los diferentes tiempos de cada institución.`,
+        'q7': `El equipo psicosocial debe estar advertido de que su propia implicación no es neutral. Se activan matrices de aprendizaje ligadas a prejuicios de clase media sobre el 'tiempo productivo' o la sobreidentificación paternalista que busca 'rescatar' a los jóvenes. Como señala Ana Quiroga, la supervisión continua es el dispositivo indispensable para evitar una distancia defensiva o una ilusión mesiánica, permitiendo que el ECRO permanezca como un esquema abierto dispuesto a aprender de la cultura popular.`,
+        'q8': `Abordamos la tensión 'Urgencia vs. Proceso'. Resolver únicamente el hambre inmediata entregando viandas en el comedor es necesario, pero si la intervención se clausura allí, actúa como una defensa que impide pensar la causa estructural de la marginación. La ética de la intervención comunitaria exige atender la urgencia alimentaria diaria mientras se sostiene simultáneamente un proceso formativo a mediano plazo que devuelva autonomía y organización a las y los jóvenes.`,
+        'q9': `Dispositivo grupal propuesto: Coordinación de un 'Taller Operativo de Producción y Memoria Barrial' que funcione quincenalmente en el salón comunitario. La tarea explícita consistirá en el diseño y gestión de un emprendimiento productivo juvenil y un mural comunitario. La tarea implícita apuntará a elaborar las ansiedades básicas (miedo a la pérdida de identidad y miedo al ataque), reconfigurando los roles rígidos y restituyendo la palabra colectiva como puente hacia la clínica social comunitaria.`
+      };
+
+      Object.keys(sample).forEach(key => {
+        const el = document.getElementById(key);
+        if (el) el.value = sample[key];
+      });
+
+      for (let i = 1; i <= 4; i++) {
+        const check = document.getElementById(`rub-${i}`);
+        if (check) check.checked = true;
+      }
+      updateRubricScore();
+      autoSaveData();
+      showToast('Borrador modelo cargado en los 5 ejes.');
+    }
+
+    // Floating notification toast
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const text = document.getElementById('toast-text');
+      if (toast && text) {
+        text.textContent = msg;
+        toast.classList.remove('opacity-0', 'pointer-events-none');
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'pointer-events-none');
+        }, 3200);
+      }
+    }
+
+    // Initialization on window load
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      loadSavedData();
+      showMapDetail('territorio');
+    });
+  </script>
+</body>
+</html>
