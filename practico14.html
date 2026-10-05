@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trabajo Práctico: Clínica del Grupo Operativo</title>
+  <style>
+    :root {
+      --bg-canvas: #0b1120;
+      --bg-card: #1e293b;
+      --bg-inset: #070c18;
+      --primary: #38bdf8;
+      --accent: #f59e0b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      padding: 24px 16px 40px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 940px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 26px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 22px;
+    }
+
+    .author-badge {
+      display: inline-block;
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--primary);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      padding: 5px 16px;
+      border-radius: 9999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+
+    header h1 {
+      font-size: 1.95rem;
+      color: var(--text-main);
+      margin-bottom: 10px;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    /* Pestañas */
+    .tabs-nav {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.98rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--primary);
+      color: var(--text-main);
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #04101c;
+      border-color: var(--primary);
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
+    }
+
+    .case-panel {
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .case-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 22px;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      color: var(--accent);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* Contenedor del video */
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid var(--border-color);
+      margin-bottom: 12px;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .video-fallback-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-inset);
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .fallback-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .fallback-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Barra de control para disparadores */
+    .trigger-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-inset);
+      border: 1px dashed var(--border-color);
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    .key-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    kbd {
+      background: var(--bg-card);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: 3px 9px;
+      border-radius: 5px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 0 var(--border-color);
+    }
+
+    .action-btn {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+      background: var(--primary);
+      color: #03101e;
+    }
+
+    /* Lista de disparadores */
+    .triggers-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .trigger-item {
+      background: var(--bg-inset);
+      border-left: 4px solid var(--accent);
+      padding: 14px 18px;
+      border-radius: 6px;
+      display: none;
+      animation: slideIn 0.35s ease-out forwards;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-8px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .trigger-item.visible {
+      display: block;
+    }
+
+    .trigger-item strong {
+      color: var(--primary);
+      display: block;
+      font-size: 0.98rem;
+      margin-bottom: 4px;
+    }
+
+    .trigger-item p {
+      font-size: 0.93rem;
+      color: var(--text-main);
+    }
+
+    .counter-tag {
+      font-size: 0.82rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 36px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-size: 0.86rem;
+    }
+
+
+    /* Mejoras funcionales */
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: -8px 0 22px;
+    }
+
+    .utility-btn {
+      background: var(--bg-inset);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 8px 14px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .utility-btn:hover, .utility-btn:focus-visible {
+      border-color: var(--primary);
+      outline: none;
+    }
+
+    .progress-wrap {
+      width: 100%;
+      height: 8px;
+      background: var(--bg-inset);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--primary);
+      transition: width .25s ease;
+    }
+
+    .status-line {
+      margin-top: 8px;
+      color: var(--text-muted);
+      font-size: .84rem;
+      text-align: right;
+    }
+
+    .tab-btn:focus-visible, .action-btn:focus-visible, .fallback-link:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 14px 10px 28px; }
+      header h1 { font-size: 1.55rem; }
+      .card { padding: 16px; }
+      .tab-btn { width: 100%; }
+      .trigger-controls { align-items: stretch; flex-direction: column; gap: 10px; }
+      .action-btn { width: 100%; padding: 10px 14px; }
+      .video-fallback-bar { align-items: flex-start; flex-direction: column; gap: 6px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="author-badge">Diseño Pedagógico: Mg. Sergio Magallanes · Psicólogo Social</div>
+      <h1>Laboratorio de Debate: Clínica del Grupo Operativo</h1>
+      <p>Dispositivo didáctico sincrónico para la observación del proceso grupal y la aplicación del Cono Invertido a partir de material audiovisual en español.</p>
+    </header>
+
+    <!-- Navegación de Casos -->
+    <nav class="tabs-nav" role="tablist" aria-label="Casos de análisis">
+      <button class="tab-btn active" type="button" role="tab" aria-selected="true" aria-controls="case1" id="tab-case1" onclick="switchCase('case1')">Caso 1: Apolo 13 (Filtro de CO₂)</button>
+      <button class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="case2" id="tab-case2" onclick="switchCase('case2')">Caso 2: 12 Hombres en Pugna (Primera Votación)</button>
+    </nav>
+
+    <div class="toolbar" aria-label="Controles generales">
+      <button class="utility-btn" type="button" onclick="showAllTriggers()">Mostrar todos</button>
+      <button class="utility-btn" type="button" onclick="hideAllTriggers()">Ocultar todos</button>
+      <button class="utility-btn" type="button" onclick="resetActivity()">Reiniciar actividad</button>
+    </div>
+
+    <!-- CASO 1: APOLO 13 -->
+    <div id="case1" class="case-panel active" role="tabpanel" aria-labelledby="tab-case1">
+      <div class="card">
+        <h2 class="card-title">Secuencia Audiovisual: "La clavija cuadrada en el agujero redondo"</h2>
+        <div class="video-wrapper">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;padding:24px;text-align:center;background:#05080f;">
+            <div style="font-size:1.15rem;font-weight:700;color:#f8fafc;">Apolo 13 · Filtro de CO₂</div>
+            <div style="max-width:620px;color:#94a3b8;">YouTube no permite incrustar este clip. Abrilo desde el botón para reproducirlo.</div>
+            <a class="action-btn" style="text-decoration:none;background:#38bdf8;color:#04101c;padding:10px 18px;" href="https://www.youtube.com/watch?v=ry55--J4_VQ" target="_blank" rel="noopener noreferrer">▶ Abrir video en YouTube</a>
+          </div>
+        </div>
+        <div class="video-fallback-bar">
+          <span>Audio: Español (Doblaje oficial).</span>
+          <div>
+            <a class="fallback-link" href="https://www.youtube.com/watch?v=ry55--J4_VQ" target="_blank" rel="noopener noreferrer">↗ Abrir clip vigente en YouTube</a><br>
+            <span style="font-size:.82rem;word-break:break-all;">https://www.youtube.com/watch?v=ry55--J4_VQ</span><br>
+            <a class="fallback-link" href="https://www.classhook.com/resources/481-apollo-13-square-peg-in-a-round-hole" target="_blank" rel="noopener noreferrer">↗ Página de respaldo del clip</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Ejes Disparadores para el Debate</span>
+          <span class="counter-tag" id="counter-case1" aria-live="polite">Disparadores: 0 de 6 revelados</span>
+        </div>
+        <div class="progress-wrap" aria-hidden="true"><div class="progress-bar" id="progress-case1"></div></div>
+        <div class="status-line" id="status-case1">Listo para comenzar.</div>
+
+        <div class="trigger-controls">
+          <div class="key-badge">Presione la tecla <kbd>D</kbd> para revelar el siguiente disparador</div>
+          <button class="action-btn" onclick="revealNextTrigger('case1')">Siguiente disparador</button>
+        </div>
+
+        <div class="triggers-list" id="triggers-case1" aria-live="polite">
+          <div class="trigger-item">
+            <strong>1. Tarea Explícita vs. Tarea Implícita</strong>
+            <p>¿Cuál es la consigna técnica concreta pactada y cuál es la ansiedad catastrófica (miedo a la muerte/fracaso inminente) que el equipo debe contener y metabolizar para no bloquearse?</p>
+          </div>
+          <div class="trigger-item">
+            <strong>2. Pretarea y Principio de Realidad</strong>
+            <p>Al arrojar los elementos sobre la mesa ("esto es lo único que tienen allá arriba"), ¿qué mecanismos defensivos de queja o evasión quedan cancelados en el acto para anclar al grupo en el aquí y ahora?</p>
+          </div>
+          <div class="trigger-item">
+            <strong>3. Ansiedades Básicas y Resistencia al Cambio</strong>
+            <p>¿Dónde opera el miedo a la pérdida (las certezas de los manuales de vuelo preestablecidos) y el miedo al ataque (lo imprevisto y desconocido de la falla técnica)?</p>
+          </div>
+          <div class="trigger-item">
+            <strong>4. Vector Aprendizaje: Ruptura de Estereotipias</strong>
+            <p>¿Cómo se manifiesta la apropiación instrumental de la realidad cuando el grupo se ve forzado a usar cinta, bolsas y manuales fuera de su función convencional?</p>
+          </div>
+          <div class="trigger-item">
+            <strong>5. Vectores Pertinencia y Cooperación</strong>
+            <p>¿Qué comportamientos corporales y verbales demuestran que el grupo no fuga hacia tareas sustitutas y complementa saberes individuales desde roles diferenciados?</p>
+          </div>
+          <div class="trigger-item">
+            <strong>6. Función de Coordinación y Encuadre</strong>
+            <p>¿Cómo actúa el coordinador del equipo para fijar las constantes de tiempo y recursos sin imponer la solución técnica, funcionando como un co-pensor del proceso?</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASO 2: 12 HOMBRES EN PUGNA -->
+    <div id="case2" class="case-panel" role="tabpanel" aria-labelledby="tab-case2" hidden>
+      <div class="card">
+        <h2 class="card-title">Secuencia Audiovisual: "La primera votación y la disidencia solitaria"</h2>
+        <div class="video-wrapper">
+          <!-- Clip específico con la votación y el diálogo inicial en español -->
+          <iframe id="iframe-case2" src="https://www.youtube-nocookie.com/embed/hiyJZP-MlxM?rel=0" title="12 hombres en pugna - Primera votación" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="video-fallback-bar">
+          <span>Audio: Español (Doblaje clásico).</span>
+          <div>
+            <a class="fallback-link" href="https://www.youtube.com/watch?v=hiyJZP-MlxM" target="_blank" rel="noopener noreferrer">↗ Abrir video en YouTube</a><br>
+            <span style="font-size:.82rem;word-break:break-all;">https://www.youtube.com/watch?v=hiyJZP-MlxM</span><br>
+            <a class="fallback-link" href="https://www.eticaycine.org/Doce-hombres-en-pugna-3867" target="_blank" rel="noopener noreferrer">↗ Página académica de respaldo con la escena</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>Ejes Disparadores para el Debate</span>
+          <span class="counter-tag" id="counter-case2" aria-live="polite">Disparadores: 0 de 6 revelados</span>
+        </div>
+        <div class="progress-wrap" aria-hidden="true"><div class="progress-bar" id="progress-case2"></div></div>
+        <div class="status-line" id="status-case2">Listo para comenzar.</div>
+
+        <div class="trigger-controls">
+          <div class="key-badge">Presione la tecla <kbd>D</kbd> para revelar el siguiente disparador</div>
+          <button class="action-btn" onclick="revealNextTrigger('case2')">Siguiente disparador</button>
+        </div>
+
+        <div class="triggers-list" id="triggers-case2" aria-live="polite">
+          <div class="trigger-item">
+            <strong>1. Pretarea y Actuar «Como si»</strong>
+            <p>¿En qué verbalizaciones y conductas previas a la votación (el calor agobiante, los chistes, las entradas para el partido de béisbol) se evidencia la huida frente al peso ético de la tarea deliberativa?</p>
+          </div>
+          <div class="trigger-item">
+            <strong>2. El Portavoz y el Surgimiento del Emergente</strong>
+            <p>Cuando el jurado 8 levanta la mano en soledad, ¿de qué conflicto implícito y qué duda latente de la sala se hace cargo en el cruce de su historia personal con la situación grupal?</p>
+          </div>
+          <div class="trigger-item">
+            <strong>3. Situación Dilemática vs. Transformación en Problema</strong>
+            <p>¿Cómo intenta el grupo forzar un dilema cerrado ("o es culpable y terminamos ya, o nos complicamos la vida") frente a la propuesta del jurado 8 de abrirlo a la problematización ("hablemos una hora")?</p>
+          </div>
+          <div class="trigger-item">
+            <strong>4. Roles Prototípicos en Conflicto</strong>
+            <p>¿Quiénes encarnan al líder de resistencia (el apuro por sostener la pretarea) y al saboteador, frente al surgimiento del líder de cambio centrado en cuidar la tarea?</p>
+          </div>
+          <div class="trigger-item">
+            <strong>5. Vectores Telé y Comunicación</strong>
+            <p>¿Cómo se observa la telé negativa y la coacción vincular contra el disidente en el tono de voz, la postura física y los cortes de diálogo?</p>
+          </div>
+          <div class="trigger-item">
+            <strong>6. Obstáculo Epistemofílico y Matrices Previas</strong>
+            <p>¿Qué prejuicios y preconceptos de clase/generacionales emergen en los argumentos rápidos de culpabilidad, obstaculizando una lectura objetiva de los hechos juzgados?</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      Práctico de Psicología Social · Unidad IV: Clínica Social y Dispositivos de Intervención · Material elaborado por el <strong>Mg. Sergio Magallanes (Psicólogo Social)</strong>.
+    </footer>
+  </div>
+
+  <script>
+    let activeCase = 'case1';
+    const revealedIndex = { case1: 0, case2: 0 };
+
+    function getItems(caseId) {
+      return document.querySelectorAll(`#triggers-${caseId} .trigger-item`);
+    }
+
+    function updateUI(caseId) {
+      const items = getItems(caseId);
+      const count = revealedIndex[caseId];
+      const counter = document.getElementById(`counter-${caseId}`);
+      const progress = document.getElementById(`progress-${caseId}`);
+      const status = document.getElementById(`status-${caseId}`);
+      const pct = items.length ? (count / items.length) * 100 : 0;
+
+      counter.textContent = `Disparadores: ${count} de ${items.length} revelados`;
+      progress.style.width = `${pct}%`;
+      status.textContent = count === 0
+        ? 'Listo para comenzar.'
+        : count === items.length
+          ? 'Todos los disparadores están visibles.'
+          : `Siguiente disparador disponible: ${count + 1}.`;
+    }
+
+    function switchCase(caseId) {
+      activeCase = caseId;
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        const selected = btn.id === `tab-${caseId}`;
+        btn.classList.toggle('active', selected);
+        btn.setAttribute('aria-selected', selected ? 'true' : 'false');
+        btn.tabIndex = selected ? 0 : -1;
+      });
+
+      document.querySelectorAll('.case-panel').forEach(panel => {
+        const selected = panel.id === caseId;
+        panel.classList.toggle('active', selected);
+        panel.hidden = !selected;
+      });
+
+      localStorage.setItem('grupoOperativo.activeCase', caseId);
+    }
+
+    function revealNextTrigger(caseId = activeCase) {
+      const items = getItems(caseId);
+      if (revealedIndex[caseId] >= items.length) return;
+
+      const item = items[revealedIndex[caseId]];
+      item.classList.add('visible');
+      revealedIndex[caseId]++;
+      updateUI(caseId);
+      saveState();
+      item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function showAllTriggers() {
+      const items = getItems(activeCase);
+      items.forEach(item => item.classList.add('visible'));
+      revealedIndex[activeCase] = items.length;
+      updateUI(activeCase);
+      saveState();
+    }
+
+    function hideAllTriggers() {
+      getItems(activeCase).forEach(item => item.classList.remove('visible'));
+      revealedIndex[activeCase] = 0;
+      updateUI(activeCase);
+      saveState();
+    }
+
+    function resetActivity() {
+      ['case1', 'case2'].forEach(caseId => {
+        getItems(caseId).forEach(item => item.classList.remove('visible'));
+        revealedIndex[caseId] = 0;
+        updateUI(caseId);
+      });
+      localStorage.removeItem('grupoOperativo.state');
+      localStorage.removeItem('grupoOperativo.activeCase');
+      switchCase('case1');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function saveState() {
+      localStorage.setItem('grupoOperativo.state', JSON.stringify(revealedIndex));
+    }
+
+    function restoreState() {
+      try {
+        const saved = JSON.parse(localStorage.getItem('grupoOperativo.state') || '{}');
+        ['case1', 'case2'].forEach(caseId => {
+          const items = getItems(caseId);
+          const count = Math.max(0, Math.min(Number(saved[caseId]) || 0, items.length));
+          revealedIndex[caseId] = count;
+          items.forEach((item, index) => item.classList.toggle('visible', index < count));
+          updateUI(caseId);
+        });
+      } catch (_) {
+        ['case1', 'case2'].forEach(updateUI);
+      }
+
+      const savedCase = localStorage.getItem('grupoOperativo.activeCase');
+      switchCase(savedCase === 'case2' ? 'case2' : 'case1');
+    }
+
+    window.addEventListener('keydown', function(event) {
+      const tag = document.activeElement?.tagName?.toLowerCase();
+      if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+
+      if (event.key === 'd' || event.key === 'D' || event.key === ' ') {
+        event.preventDefault();
+        revealNextTrigger(activeCase);
+      }
+
+      if (event.key === 'ArrowRight') switchCase('case2');
+      if (event.key === 'ArrowLeft') switchCase('case1');
+      if (event.key === 'r' || event.key === 'R') resetActivity();
+    });
+
+    document.addEventListener('DOMContentLoaded', restoreState);
+  </script>
+</body>
+</html>
